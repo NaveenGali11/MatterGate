@@ -1,0 +1,136 @@
+{
+  "repository": "https://github.com/DataStrategyLab/privilab",
+  "commit": "21baa4ccdc468bd6a30681344eb8ec3df752790a",
+  "inspected_date": "2026-10-24",
+  "license": "Apache-2.0",
+  "mode": "selected modified source adaptations",
+  "files": [
+    {
+      "path": "src/privilab/application/permissions.py",
+      "destinations": [
+        "app/integrations/privilab/permissions.py"
+      ],
+      "symbols": [
+        "parse_permission_policy",
+        "evaluate_permission",
+        "permits_protected_progression"
+      ],
+      "modifications": "Local projection types; explicit purpose/jurisdiction selectors.",
+      "blob_sha": "d81018edf20cec3a47a692ed803ae12d024d3af8",
+      "source_sha256": "5b54e005192367c547aabf971ef9628d7dfc08c8062b87fb185a804797fc10d6",
+      "local_sha256": {
+        "app/integrations/privilab/permissions.py": "3a537b8d20b822145f4310f144296cfaa775bb92571ee9ff5bd86bb2e1514c0b"
+      }
+    },
+    {
+      "path": "src/privilab/evals/evaluators.py",
+      "destinations": [
+        "app/integrations/privilab/citations.py"
+      ],
+      "symbols": [
+        "ProvenanceIndex",
+        "provenance_index",
+        "authorized_source",
+        "citation_resolution"
+      ],
+      "modifications": "Standalone identifiers-only interface; boolean results.",
+      "blob_sha": "e09fc760ed8a34072e3a345341b9537af84f0ddd",
+      "source_sha256": "35a15cafc638bfbaaaf61e6bb7db54781abd67461014070b05b952b665b91383",
+      "local_sha256": {
+        "app/integrations/privilab/citations.py": "744b055ddef9fb28a618d83374b51ff375c07f4a3372361693b923d058ee5e73"
+      }
+    },
+    {
+      "path": "src/privilab/adapters/retrieval/sqlite_fts.py",
+      "destinations": [
+        "app/services/retrieval.py"
+      ],
+      "symbols": [
+        "_RETRIEVE_SQL"
+      ],
+      "modifications": "Explicit source allowlist, source metadata eligibility, bounded context and local match-density ranking.",
+      "blob_sha": "c312133bd0508a5f3077a059ccdf6f00bb5a98bb",
+      "source_sha256": "83c7239f638a8c280696609a7bd3a41f4f6c59f7c8d274128245d7da8f7616c5",
+      "local_sha256": {
+        "app/services/retrieval.py": "07c18de72313a07a048b39f12a4b1d2ae0af8b74a49cff6aae1c9c2b9432a144"
+      }
+    },
+    {
+      "path": "src/privilab/adapters/models/governed_fixture.py",
+      "destinations": [
+        "app/providers/fixture.py"
+      ],
+      "symbols": [
+        "_load_governed_fixture"
+      ],
+      "modifications": "Fixture-byte hash check adapted for fixed MatterGate paths and scenario binding.",
+      "blob_sha": "a49962fe526b52a47ec0452acc4363ba4f5f60e5",
+      "source_sha256": "80e263cf8c9a0459c7c3af2009629e32eb4438fd13c3d2b152b6309638e1d66e",
+      "local_sha256": {
+        "app/providers/fixture.py": "e21c8966667aec71d70fce4375c388c3b6e793a2c539926e7bed025b69ebcf88"
+      }
+    },
+    {
+      "path": "src/privilab/application/run_review.py",
+      "destinations": [
+        "app/services/review.py"
+      ],
+      "symbols": [
+        "RunReviewService._view",
+        "RunReviewService.decide"
+      ],
+      "modifications": "Ready-only actions, signed session identity and required rationale; transactional audit append.",
+      "blob_sha": "d9c6b0325f05d3516ce4cdddc0da7d7491c6b1da",
+      "source_sha256": "a57d95dba86e6e6d956c474e1c4bb1f4945725813c1aa7f7825291234264480a",
+      "local_sha256": {
+        "app/services/review.py": "3ca3b64e1c786cc4e87facc9eda7f09cc265d67a38a0ed9b81630faf5b43013b"
+      }
+    },
+    {
+      "path": "src/privilab/domain/research.py",
+      "destinations": [
+        "app/domain.py"
+      ],
+      "symbols": [
+        "_object_without_duplicate_fields"
+      ],
+      "modifications": "Duplicate-field rejection adapted for MatterGate strict parsing; MatterGate-owned cited-statement schema and unchanged-text projection added separately.",
+      "blob_sha": "dc9d2b0aa28b18f0af385979ed59c9063a498e43",
+      "source_sha256": "78c740cc6b1958a4254c9d4a747fcd3daaeb9c29a2440b7b03cc4280cddba7f6",
+      "local_sha256": {
+        "app/domain.py": "f71070c4d11e390f4aa0822033d18a0c80ef59a99d52baba87457e47c8e885d2"
+      }
+    },
+    {
+      "path": "tests/security/test_retrieval_authorization_boundary.py",
+      "destinations": [
+        "tests/test_controls.py"
+      ],
+      "symbols": [
+        "test_each_context_dimension_is_an_exact_isolation_boundary",
+        "test_non_allow_permission_states_cannot_reach_provider"
+      ],
+      "modifications": "Ported and extended cases for explicit actor/purpose/jurisdiction scopes and budgets.",
+      "blob_sha": "d540fe086c321aa3fd2200688632b77976c7ff82",
+      "source_sha256": "6f54291891ad96d880f28d7ae9142388597c08d38f89e09dc271877cb39b8137",
+      "local_sha256": {
+        "tests/test_controls.py": "e526fe72e517afedc2c19cf71aeecf2a2915a464a95927099026c7a2ec2e95d0"
+      }
+    },
+    {
+      "path": "tests/integration/test_permission_fail_closed.py",
+      "destinations": [
+        "tests/test_controls.py"
+      ],
+      "symbols": [
+        "test_inline_synthetic_policy_controls_progression_without_retrieval"
+      ],
+      "modifications": "Missing context, explicit block and unresolved condition behavior ported to seeded policies.",
+      "blob_sha": "f91421276584ce1a7a3f617216647d71d92f2424",
+      "source_sha256": "1cf83e42352b1079c514d004510402cafdaf201741ae59dab7fac30efa5f7db2",
+      "local_sha256": {
+        "tests/test_controls.py": "e526fe72e517afedc2c19cf71aeecf2a2915a464a95927099026c7a2ec2e95d0"
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+.env*
+!.env.example
+.venv/
+.cache/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+data/
+*.sqlite3*
+*.log
+logs/
+.DS_Store
+
+# Local upgrade planning package; excluded from the public repository.
+/docs/upgrades/

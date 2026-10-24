@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "policy_id": "mattergate-demo",
+  "policy_version": "mattergate-1.0",
+  "synthetic": true,
+  "required_context": [
+    "user_id",
+    "role_id",
+    "client_id",
+    "matter_id",
+    "workflow_id",
+    "purpose",
+    "jurisdiction"
+  ],
+  "rules": [
+    {
+      "rule_id": "deny-restricted-matter",
+      "effect": "BLOCK",
+      "match": {
+        "matter_id": "restricted_m_and_a"
+      },
+      "condition_ids": []
+    },
+    {
+      "rule_id": "jordan_sales_ops-EU",
+      "effect": "ALLOW",
+      "match": {
+        "user_id": "jordan_sales_ops",
+        "matter_id": "vendor_onboarding",
+        "purpose": "vendor_risk_assessment",
+        "jurisdiction": "EU"
+      },
+      "condition_ids": []
+    },
+    {
+      "rule_id": "jordan_sales_ops-US",
+      "effect": "ALLOW",
+      "match": {
+        "user_id": "jordan_sales_ops",
+        "matter_id": "vendor_onboarding",
+        "purpose": "vendor_risk_assessment",
+        "jurisdiction": "US"
+      },
+      "condition_ids": []
+    },
+    {
+      "rule_id": "jordan_sales_ops-GLOBAL",
+      "effect": "ALLOW",
+      "match": {
+        "user_id": "jordan_sales_ops",
+        "matter_id": "vendor_onboarding",
+        "purpose": "vendor_risk_assessment",
+        "jurisdiction": "GLOBAL"
+      },
+      "condition_ids": []
+    },
+    {
+      "rule_id": "maya_privacy_counsel-EU",
+      "effect": "ALLOW",
+      "match": {
+        "user_id": "maya_privacy_counsel",
+        "matter_id": "vendor_onboarding",
+        "purpose": "vendor_risk_assessment",
+        "jurisdiction": "EU"
+      },
+      "condition_ids": []
+    },
+    {
+      "rule_id": "maya_privacy_counsel-US",
+      "effect": "ALLOW",
+      "match": {
+        "user_id": "maya_privacy_counsel",
+        "matter_id": "vendor_onboarding",
+        "purpose": "vendor_risk_assessment",
+        "jurisdiction": "US"
+      },
+      "condition_ids": []
+    },
+    {
+      "rule_id": "maya_privacy_counsel-GLOBAL",
+      "effect": "ALLOW",
+      "match": {
+        "user_id": "maya_privacy_counsel",
+        "matter_id": "vendor_onboarding",
+        "purpose": "vendor_risk_assessment",
+        "jurisdiction": "GLOBAL"
+      },
+      "condition_ids": []
+    }
+  ]
+}

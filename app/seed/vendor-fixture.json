@@ -1,0 +1,41 @@
+{
+  "summary": "Sharing is conditional on vendor review and documented safeguards; this draft does not authorize a transfer.",
+  "recommendation": "PROCEED_WITH_CONDITIONS",
+  "conditions": [
+    "Obtain a signed DPA and confirm the support-only purpose before sharing.",
+    "Limit the dataset to necessary business contact fields, use approved secure transfer, and document deletion timing."
+  ],
+  "risks_and_caveats": [
+    "The synthetic DPA does not establish transfer safeguards; counsel must review any international transfer."
+  ],
+  "open_questions": [
+    "Has Vendor X's DPA been signed, and have subprocessors and deletion terms been reviewed?"
+  ],
+  "citations": [
+    {
+      "claim": "Sharing is conditional on vendor review and documented safeguards; this draft does not authorize a transfer.",
+      "chunk_ids": [
+        "INT-VENDOR-001-C01"
+      ]
+    },
+    {
+      "claim": "Obtain a signed DPA and confirm the support-only purpose before sharing.",
+      "chunk_ids": [
+        "INT-DPA-001-C01"
+      ]
+    },
+    {
+      "claim": "Limit the dataset to necessary business contact fields, use approved secure transfer, and document deletion timing.",
+      "chunk_ids": [
+        "INT-DATA-001-C01"
+      ]
+    },
+    {
+      "claim": "The synthetic DPA does not establish transfer safeguards; counsel must review any international transfer.",
+      "chunk_ids": [
+        "INT-DPA-001-C01"
+      ]
+    }
+  ],
+  "disclaimer": "MatterGate is a demonstration research workflow using synthetic and public materials. It does not provide legal advice, make legal decisions, or establish compliance."
+}
