@@ -1,5 +1,7 @@
 # MatterGate
 
+<img src="docs/images/devpost/mattergate-thumbnail.png" alt="MatterGate — Permission before context" width="760">
+
 **Permissioned legal research—policy before model context.**
 
 MatterGate is a working research workflow for legal, privacy and compliance teams.
@@ -12,15 +14,16 @@ a separate human reviewer records the decision.
 > reference. It does not provide legal advice, make legal decisions, or establish
 > compliance.
 
+[Handover](HANDOVER.md) · [Current PRD](mattergate-prd.md) ·
 [Setup](docs/setup.md) · [User guide](docs/user-guide.md) ·
 [Architecture](docs/architecture.md) · [API](docs/api.md) ·
-[Verification](docs/testing.md) · [Hackathon brief](docs/hackathon-submission.md)
+[Verification](docs/testing.md) · [Hackathon overview](docs/hackathon-submission.md)
 
-![Evidence beside each claim in the updated research workspace](docs/images/evidence-workspace.png)
+![Live research brief with authorized evidence beside each claim](docs/images/devpost/01-live-evidence-review.jpg)
 
-*Current interface, captured from a clearly labeled offline fixture during browser QA.
-The earlier successful live demonstration is preserved in [live screenshots](docs/images/README.md).
-Passing structural checks is not a finding of legal accuracy.*
+*Actual live NVIDIA/Nebius run with synthetic/public evidence. The thumbnail above
+is promotional artwork; this workspace is a real product screenshot.
+[View the gallery](docs/images/devpost/README.md). Structural checks do not establish legal accuracy.*
 
 ## What it does
 
@@ -39,20 +42,21 @@ model-selected tools, upload files, or approve its own output.
 
 ## Verified demonstration
 
-On October 24, 2026, the operator demonstrated a real live request that reached
-**Ready for review**, passed **10/10 controls**, and showed **Hash chain verified**
-in the audit view. The operator then confirmed **Approved** and
-**REVIEW SUBMITTED**, and subsequently confirmed the blocked-request scenario.
-The observed live run is identified by prefix `358410d3`.
+On October 24, 2026, the operator completed updated live run `08126a78`:
+NVIDIA Nemotron on Nebius returned a complete draft, all **10 structural controls
+passed**, and a separate reviewer approved the research assessment.
 
-The upgraded working tree passes **101 automated tests** using fixture and mocked
-transport data. Browser QA completed the fixture/review/denial/download flow and
-32 screen/viewport checks. No paid live calls were made for this upgrade, and no
-current remote CI claim is made. See [verification evidence](docs/testing.md).
+The receipt records **one provider transport attempt**, **302 output tokens** and
+**1,515 ms provider latency**. These are observations from one run, not a benchmark.
+Evidence navigation, receipt download, history filters and native 200% request-form
+zoom were also confirmed.
 
-Version 0.2.0 adds inline evidence, clear state guidance, safe diagnostics, measured
-attempts, history filters and a downloadable run receipt. See the
-[local test and build guide](docs/release-guide.md).
+![Live run receipt showing provider execution, checks and human disposition](docs/images/devpost/02-nebius-live-receipt.jpg)
+
+The release passed **101 local automated tests** using fixtures and mocked
+transports. Isolated browser QA completed the fixture/review/denial/download flow
+and 32 route/viewport checks. Remote CI is separate from these local results.
+See [verification evidence](docs/testing.md) and the [release guide](docs/release-guide.md).
 
 ## Start locally
 
@@ -236,10 +240,10 @@ The CI workflow is configured, but its latest result must be checked after publi
 ## Publish and present
 
 - [GitHub publication steps](docs/github-publishing.md)
-- [Hackathon submission draft and remaining assets](docs/hackathon-submission.md)
+- [Hackathon project overview](docs/hackathon-submission.md)
 - [Demo script under three minutes](docs/demo-script.md)
 - [Documentation index](docs/README.md)
-- [Original PRD](mattergate-prd.md) and [build status](BUILD_PLAN.md)
+- [Current PRD](mattergate-prd.md) and [roadmap](BUILD_PLAN.md)
 
 Original MatterGate source is [MIT licensed](LICENSE). Adapted PriviLAB source
 retains its Apache-2.0 license and notices under [third_party/privilab](third_party/privilab/LICENSE).

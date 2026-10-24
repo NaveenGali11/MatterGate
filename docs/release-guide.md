@@ -1,7 +1,8 @@
 # Evidence & Review release — local test guide
 
-Version 0.2.0, October 24, 2026. Implementation is local; no new commit, push,
-deployment, GitHub release or hackathon submission is implied.
+Version 0.2.0, October 24, 2026. Implementation milestone `a7cba1b` passed
+local and operator-guided acceptance. This source guide does not imply deployment
+or a published binary release.
 
 ## Implemented
 
@@ -25,7 +26,7 @@ The generation contract, authorization boundary, corpus and human-decision
 state machine are preserved. No database schema migration is required; existing
 audit records are not rewritten.
 
-## Test together
+## Acceptance walkthrough
 
 Restart your normal local server to load the Python changes, then hard-refresh
 the browser. The existing private `.env` remains unchanged.
@@ -64,8 +65,10 @@ and start one worker.
 
 This is a local artifact, not an uploaded release or public judge-access URL.
 Live inference still needs server-side Nebius credentials; fixture mode does not.
-A native browser-zoom pass, target-role user study, repeated paid live trials and
-current remote CI verification remain separate acceptance tasks.
+The operator confirmed native 200% browser zoom on the request form. Target-role
+validation, repeated live trials, real mobile-device checks and current remote CI
+verification remain separate acceptance tasks. Rebuild the archive from the
+intended source revision before distributing it.
 
 ## Scope retained for later
 

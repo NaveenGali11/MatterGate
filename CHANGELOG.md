@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Product and engineering handover, revised PRD and current implementation roadmap.
+- Illustrated public READMEs with live product captures and a project thumbnail.
+- Public source packaging excludes historical drafts and image-generation working files.
+
 ## 0.2.0 — Evidence & Review — 2026-10-24
 
 - State-specific explanations and next actions; draft approval explicitly separated
@@ -13,11 +19,12 @@
 - Consolidated typography, contrast, responsive layouts and keyboard navigation.
 - Reproducible source test-build archive excluding private runtime files and local plans.
 - 101 local tests pass; fixture browser workflow and 32 viewport/screen checks pass.
-  The new revision has not made a paid live inference call or been published.
+  The operator subsequently confirmed an updated live run, draft approval,
+  receipt download, filters, inline evidence and native 200% form zoom.
 
-Current limitations and test instructions are in docs/release-guide.md. Native
-browser zoom, real-device testing, target-role validation and repeat live trials
-remain pending. Older entries below describe their original milestone.
+
+Current limitations and test instructions are in docs/release-guide.md. Real-device
+testing, target-role validation and repeated live trials remain pending. Older entries below describe their original milestone.
 
 ## 0.1.0 — Hackathon MVP — 2026-10-24
 

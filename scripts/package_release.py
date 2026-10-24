@@ -9,7 +9,7 @@ from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
-ROOT_FILES = {"README.md", "LICENSE", "SECURITY.md", "CONTRIBUTING.md", "CHANGELOG.md",
+ROOT_FILES = {"README.md", "HANDOVER.md", "LICENSE", "SECURITY.md", "CONTRIBUTING.md", "CHANGELOG.md",
               "BUILD_PLAN.md", "mattergate-prd.md", "pyproject.toml", "requirements.lock", ".env.example", ".gitignore"}
 DIRECTORIES = {"app", "docs", "tests", "third_party", ".github", "scripts"}
 
@@ -22,7 +22,9 @@ def release_files(root):
             continue
         if "__pycache__" in relative.parts or path.suffix == ".pyc":
             continue
-        if relative.parts[:2] == ("docs", "upgrades"):
+        if relative.parts[:2] in {("docs", "upgrades"), ("docs", "archive")}:
+            continue
+        if path.name.endswith(".prompt.txt"):
             continue
         if any(parent.is_symlink() for parent in (path, *path.parents) if parent != root.parent):
             continue

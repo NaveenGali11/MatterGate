@@ -2,7 +2,7 @@
 
 Inspected October 24, 2026. Repository: [DataStrategyLab/privilab](https://github.com/DataStrategyLab/privilab). Inspected commit: [`21baa4ccdc468bd6a30681344eb8ec3df752790a`](https://github.com/DataStrategyLab/privilab/commit/21baa4ccdc468bd6a30681344eb8ec3df752790a), committed October 23, 2026. This is a source assessment, not an execution, security certification, or report of passing upstream tests.
 
-**Implementation follow-up:** The selected adaptations are implemented in MatterGate and execute in both provider modes. The initial local fixture/mock baseline passed; later tests still need rerunning. The operator subsequently demonstrated live Lightning inference with statement-owned citations and ten passing controls, then confirmed human approval and the denial scenario. See the [source manifest](upstream/privilab-manifest.json) for copied portions, original/local hashes and changes, and [testing](testing.md) for evidence qualifications. The assessment below preserves the pre-implementation rationale. Upstream's application was not installed or executed.
+**Implementation follow-up:** The selected adaptations are implemented in MatterGate and execute in both provider modes. The implemented release passed 101 local fixture/mock tests before this documentation update. The operator subsequently demonstrated live Lightning inference with statement-owned citations and ten passing controls, then confirmed human approval and the denial scenario. See the [source manifest](upstream/privilab-manifest.json) for copied portions, original/local hashes and changes, and [testing](testing.md) for evidence qualifications. The assessment below preserves the pre-implementation rationale. Upstream's application was not installed or executed.
 
 ## Recommendation
 

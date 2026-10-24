@@ -1,107 +1,38 @@
-# Publish MatterGate to GitHub
+# Repository and release publishing
 
-This is a manual publication guide. The initial commit is published at
-https://github.com/NaveenGali11/MatterGate. Later working-tree changes still need
-review, commit and push; publication does not deploy the app.
+Public source: [NaveenGali11/MatterGate](https://github.com/NaveenGali11/MatterGate).
 
-## Before the first public commit
+Publishing source does not deploy the application. Follow [setup](setup.md) for
+local use and [release guide](release-guide.md) for a source test build.
 
-1. Run the latest local tests and inspect CI for the exact publication revision.
-   Local 0.2.0 verification is recorded in testing.md; it is not a remote-CI result.
-2. Review the files you intend to stage. Keep `.env`, all local secret variants,
-   session secrets, `.venv`, SQLite files, runtime data and logs out of Git.
-3. Keep `.env.example`, `requirements.lock`, source, tests, documentation and all
-   applicable license/NOTICE files.
-4. Review screenshots for private content. The included images are the supplied
-   synthetic demo screenshots, not captures of the Nebius key screen.
-5. Confirm source attribution and `docs/upstream/privilab-manifest.json` remain
-   accurate if adapted source changes.
-6. Choose a repository name such as `mattergate` and create an empty GitHub repository.
-   Use a public repository for the eventual hackathon submission. Do not initialize
-   a second README or different license over the files already prepared here.
+## Review a public revision
 
-`.gitignore` prevents future untracked files from being added; it does not remove
-a secret that was already committed. If credentials were ever published, revoke
-them and repair the history separately.
+- Run the local tests, inspect the staged diff and check CI for the revision being published.
+- Include source, tests, pinned dependencies, setup documentation and required licenses.
+- Keep private configuration, databases, logs, caches, local plans and generated archives out of Git.
+- Review screenshots for credentials and confidential content. The supplied gallery uses synthetic/public research material.
+- Keep the PriviLAB source manifest and modification notices accurate when adapted code changes.
+
+The ignore rules cover local runtime state and asset-generation working files.
+They do not remove secrets from existing history. Only the placeholder
+`.env.example` belongs in the repository.
 
 ## Suggested repository metadata
 
 **Description**
 
 Permissioned legal research using NVIDIA Nemotron on Nebius Token Factory, with
-scoped evidence, deterministic checks, human review and an audit trail.
+scoped evidence, human review and traceable run receipts.
 
 **Topics**
 
-`nebius`, `nemotron`, `nvidia`, `legaltech`, `ai-agents`, `fastapi`,
-`sqlite`, `responsible-ai`, `hackathon`.
+`nebius`, `nemotron`, `nvidia`, `legaltech`, `fastapi`, `sqlite`,
+`responsible-ai`, `hackathon`.
 
-Do not add a public website URL until it points to an actual accessible demo.
+Use a website URL only when it points to an accessible project page or working demo.
 
-## Commands for you to execute
+## Verify publication
 
-From the project root, inspect whether Git is already initialized:
-
-~~~sh
-git status
-~~~
-
-If it is not a Git repository, initialize it:
-
-~~~sh
-git init -b main
-~~~
-
-Stage the known publication files explicitly:
-
-~~~sh
-git add .gitignore .env.example pyproject.toml requirements.lock LICENSE README.md CHANGELOG.md CONTRIBUTING.md SECURITY.md BUILD_PLAN.md mattergate-prd.md app tests docs third_party .github scripts
-git status --short
-git diff --cached --stat
-~~~
-
-Before committing, confirm no private files are tracked:
-
-~~~sh
-git ls-files -- '.env' '.env.*' '*.sqlite3*' 'data/*' '*.log'
-~~~
-
-`.env.example` is expected in that output. An actual `.env`, key backup, runtime log
-or database is not. Inspect unexpected results before publishing.
-
-After reviewing the staged content:
-
-~~~sh
-git commit -m "Build MatterGate permissioned research MVP"
-~~~
-
-If this checkout already has a remote, inspect it before changing anything:
-
-~~~sh
-git remote -v
-~~~
-
-For a new repository with no origin, replace the placeholder below with the
-exact URL GitHub gives you:
-
-~~~sh
-git remote add origin https://github.com/YOUR_GITHUB_USERNAME/mattergate.git
-git push -u origin main
-~~~
-
-Do not force-push or overwrite an existing repository to follow this example.
-If the existing branch has a different name, use that branch deliberately or
-rename it after reviewing the repository's history.
-
-## Verify the published result
-
-- Open the repository and confirm README links, screenshots, Mermaid diagrams
-  and the license render.
-- Check that source, tests, fixture JSON, prompt text, SQL and static assets exist.
-- Confirm the Apache license/NOTICE and source manifest are present.
-- Inspect GitHub Actions; record the actual latest result.
-- Verify `.env`, databases, logs and credentials are absent.
-- Save the actual repository URL for the submission form.
-
-Publishing the repository does not deploy the app. Judge access and the public
-demo video are separate deliverables; see [submission brief](hackathon-submission.md).
+Check README images and links, source/static/seed assets, the MIT license,
+PriviLAB Apache-2.0 notices and the Actions result. A local test pass is separate
+from the remote workflow result. A source archive is separate from a hosted app.

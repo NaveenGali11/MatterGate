@@ -1,29 +1,28 @@
-# Demonstration screenshots
+# Demonstration images
 
-The PNG files here were supplied by the operator during the October 24, 2026
-walkthrough of the local MatterGate app.
+The [product gallery](devpost/README.md) contains current screenshots from the
+October 24, 2026 walkthrough. The first three views use approved live run
+`08126a78`, with actual NVIDIA/Nebius execution metadata. All research material
+is synthetic/public.
 
-| File | What it shows |
+![Current live evidence workspace](devpost/01-live-evidence-review.jpg)
+
+| Image | Contents |
 |---|---|
-| [live-brief.png](live-brief.png) | Live research draft, scoped evidence and Ready for review |
-| [live-review.png](live-review.png) | Human review handoff and ten passing controls |
-| [live-audit.png](live-audit.png) | Audit events and local hash-chain verification |
+| [Live evidence workspace](devpost/01-live-evidence-review.jpg) | Inline references with an authorized excerpt beside its claims |
+| [Live receipt](devpost/02-nebius-live-receipt.jpg) | Measured attempts, provider diagnostics, structural checks and human disposition |
+| [Human review](devpost/03-human-review-decision.jpg) | Recorded approval and rationale; no business authorization |
+| [Overview](devpost/04-product-overview.jpg) | Workflow and supported scenarios |
+| [Restricted request](devpost/05-permission-boundary.jpg) | Older denial record with its missing-counter limitation visible |
+| [Project thumbnail](devpost/mattergate-thumbnail.png) | AI-generated promotional artwork; not a product screenshot |
 
-The screenshots show synthetic scenario content and the application in a desktop
-browser. They were copied without altering the UI or inventing results. They were
-captured before the operator subsequently confirmed approval and REVIEW_SUBMITTED.
+## Earlier verification images
 
-They are not screenshots of the Nebius API-key page. Browser/desktop chrome is
-visible; replace them with clean product-only captures if preferred before release.
-The earlier `docs/preview.png` is an initial fixture-era preview and is not used
-as evidence of the current live result.
+The existing `live-brief.png`, `live-review.png` and `live-audit.png` are earlier
+operator screenshots, before approval was subsequently confirmed. They include
+browser/desktop chrome. `evidence-workspace.png` and `run-receipt.png` are clearly
+labeled offline-fixture captures from an isolated synthetic QA database.
+`../preview.png` is an initial fixture-era preview.
 
-A visible research recommendation is model-generated demo content, not legal
-advice or a verified statement about a real vendor arrangement.
-
-## Version 0.2.0 interface
-
-- evidence-workspace.png: current inline evidence workspace in explicitly labeled fixture mode.
-- run-receipt.png: current fixture receipt and expandable audit history after browser-driven review.
-
-These screenshots come from an isolated synthetic QA database. They demonstrate the interface, not a new live inference or user study.
+These earlier images document their original milestone. Fixture captures are
+not evidence of live inference, and passing checks do not establish legal accuracy.

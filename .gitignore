@@ -16,3 +16,8 @@ logs/
 /docs/upgrades/
 /dist/
 /artifacts/
+
+# Local reference drafts and asset-generation working files.
+/docs/archive/
+*.prompt.txt
+/matter_gate_thumbnail.png
