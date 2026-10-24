@@ -1,6 +1,6 @@
 # MatterGate build plan
 
-Based on `mattergate-prd.md`, version 1.0. Updated October 24, 2026. The local fixture MVP and independently implemented Nebius transport are implemented. The operator has now confirmed the live draft passing all ten controls, human approval with REVIEW_SUBMITTED, and the restricted-request denial. Publication documentation is prepared; latest automated tests, public access/video and submission execution remain outstanding.
+Based on `mattergate-prd.md`, version 1.0. Updated October 24, 2026. The local fixture MVP and independently implemented Nebius transport are implemented. The operator has now confirmed the live draft passing all ten controls, human approval with REVIEW_SUBMITTED, and the restricted-request denial. The Evidence & Review upgrade is implemented locally with 101 passing automated tests, 32 browser screen/viewport checks and source test-build packaging. Repeat live testing, remote CI, public access/video and submission execution remain outstanding.
 
 ## Implementation status
 
@@ -12,7 +12,7 @@ Based on `mattergate-prd.md`, version 1.0. Updated October 24, 2026. The local f
 | 3. Fixture workflow | Implemented: valid brief, ten checks (the eight PRD checks plus schema and claim coverage), and all three human review outcomes. |
 | 4. Nebius transport | Operator-run Lightning inference using statement-owned citations reached Ready for review with 10/10 checks, then Approved and REVIEW_SUBMITTED. Current automated tests still need rerunning after the later edits. |
 | 5. Demo interface | Implemented all seven screens. Desktop browser walkthrough verified the allowed brief, explicit Alex review, and non-revealing denial. Responsive CSS is included; a dedicated mobile-browser pass remains open. |
-| 6. Verification and packaging | Initial automated baseline: 73 passed before later edits. Current README, source attribution, API/user/setup/operations/testing guides, screenshots, publication guide and submission draft are prepared. Official rules were checked October 24. Latest local/remote CI results, dedicated mobile QA, video and judge-access URL remain open. |
+| 6. Verification and packaging | Initial automated baseline: 73 passed before later edits. Current README, source attribution, API/user/setup/operations/testing guides, screenshots, publication guide and submission draft are prepared. Official rules were checked October 24. Local 0.2.0 suite: 101 passed. Fixture browser flow and four viewport widths verified. Remote CI, native zoom/mobile-device checks, video and judge-access URL remain open. |
 
 Run instructions and current limitations are in [README.md](README.md). Preview/test data are synthetic. This status does not assert that the PRD's full live-demo definition of done is complete.
 
@@ -191,4 +191,4 @@ The MVP excludes file uploads, arbitrary URL ingestion, live web research, vecto
 
 Live credentials and model availability were confirmed through user-run inference on October 24, 2026. The active default is `nvidia/Nemotron-3_5-Lightning` on Nebius's global endpoint, with thinking disabled. The operator confirmed a live brief passing every control and subsequent human approval. The public-reference provenance is in `docs/corpus.md`; the checked submission requirements and open assets are in `docs/hackathon-submission.md`.
 
-The next steps are rerunning the latest tests, publishing the prepared repository, completing dedicated mobile/repeat-run QA, supplying a judge-accessible demo or test-build URL, recording the video and filling the submission form. During guided setup, the user requested no shell commands or tests be run by the agent. Manual live/approval/denial acceptance was performed by the operator; this is not a substitute for an updated automated result. No GitHub publication, deployment or form submission has been executed by the agent.
+The initial commit was published to GitHub. The later Evidence & Review working tree has current local test and browser evidence; see docs/testing.md and docs/release-guide.md. Next: test live together, review and publish the upgrade revision, inspect CI, provide the actual judge-access URL, record the video and complete the form. The source archive is local only. No deployment or form submission has occurred.

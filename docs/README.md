@@ -9,6 +9,7 @@ Start with the [project README](../README.md).
 | [Architecture](architecture.md) | Trust boundaries, data flow, states and persistence |
 | [API](api.md) | Sessions, CSRF, run operations, review, status and draft formats |
 | [Testing](testing.md) | Recorded evidence, automated coverage and manual acceptance |
+| [Release test guide](release-guide.md) | Current changes, test-together steps and source archive packaging |
 | [Operations](operations.md) | Failures, restarts, fixture behavior and debugging |
 | [PriviLAB reuse](privilab-reuse.md) | Pinned components, modifications, attribution and differences |
 | [Source manifest](upstream/privilab-manifest.json) | Upstream revision, copied symbols and source/local hashes |

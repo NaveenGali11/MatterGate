@@ -14,3 +14,5 @@ logs/
 
 # Local upgrade planning package; excluded from the public repository.
 /docs/upgrades/
+/dist/
+/artifacts/

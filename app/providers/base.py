@@ -14,7 +14,10 @@ class DraftResult:
 
 
 class ModelUnavailable(ControlError):
-    pass
+    def __init__(self, code, metadata=None):
+        from app.providers.diagnostics import ERROR_CODES, safe_diagnostics
+        super().__init__(code if code in ERROR_CODES else "PROVIDER_INVALID_RESPONSE")
+        self.metadata = safe_diagnostics(metadata or {})
 
 
 def validate_context(request, scope, evidence):

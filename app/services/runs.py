@@ -24,7 +24,9 @@ class RunService:
         with self.db.transaction() as cx:
             cx.execute("INSERT INTO research_runs(run_id,actor_id,matter_id,purpose,jurisdiction,mode,question,status,created_at) VALUES (?,?,?,?,?,?,?,?,?)",
                 (run_id,request.actor_id,request.matter_id,request.purpose,request.jurisdiction,request.mode,request.question,Status.RECEIVED,now()))
-            self.db.append_event(cx,run_id,"RUN_CREATED",{"status":"RECEIVED","mode":request.mode},request.actor_id)
+            observed = request.mode == "fixture" or isinstance(self.providers[request.mode], NebiusProvider)
+            self.db.append_event(cx,run_id,"RUN_CREATED",{"status":"RECEIVED","mode":request.mode,
+                "instrumentation_version":1,"transport_observed":observed},request.actor_id)
         return run_id
 
     def execute(self, run_id):
@@ -58,8 +60,16 @@ class RunService:
             event = "MODEL_REQUESTED" if request.mode == "live" else "FIXTURE_REQUESTED"
             with self.db.transaction() as cx:
                 self.db.append_event(cx,run_id,event,{"mode":request.mode,"provider":"nebius" if request.mode == "live" else "fixture"})
-            result = self.providers[request.mode].generate_draft(request=request,scope=scope,evidence=evidence)
-            provider = dict(provider=result.provider,model_id=result.model_id,request_id=result.request_id,latency_ms=result.latency_ms,mode=request.mode,**result.metadata)
+            adapter = self.providers[request.mode]
+            arguments = dict(request=request,scope=scope,evidence=evidence)
+            if isinstance(adapter, NebiusProvider):
+                def observe_attempt(attempt):
+                    with self.db.transaction() as cx:
+                        self.db.append_event(cx,run_id,"TRANSPORT_ATTEMPTED",{"attempt":attempt,"provider":"nebius"})
+                arguments["on_attempt"] = observe_attempt
+            result = adapter.generate_draft(**arguments)
+            provider = {**result.metadata,"provider":result.provider,"model_id":result.model_id,
+                "request_id":result.request_id,"latency_ms":result.latency_ms,"mode":request.mode,"outcome":"completed"}
             self.db.transition(run_id,Status.EVALUATING,"MODEL_COMPLETED" if request.mode == "live" else "FIXTURE_COMPLETED",provider,provider_json=canonical(provider))
             try:
                 draft = parse_draft(result.text)
@@ -79,7 +89,8 @@ class RunService:
                 self.db.append_event(cx,run_id,"READY_FOR_REVIEW" if passed else "RUN_BLOCKED",{"status":str(target)})
         except ModelUnavailable as error:
             code = str(error)
-            self.db.transition(run_id,Status.MODEL_UNAVAILABLE,"MODEL_FAILED",{"reason_code":code},error_code=code)
+            provider = {"provider":"nebius","model_id":self.settings.model,"mode":"live","outcome":"failed",**error.metadata}
+            self.db.transition(run_id,Status.MODEL_UNAVAILABLE,"MODEL_FAILED",{"reason_code":code,**provider},error_code=code,provider_json=canonical(provider))
         except Exception as error:
             # Never log exception messages, input text, headers, credentials or prompts.
             logger.warning("Run stopped: id=%s type=%s",run_id,type(error).__name__)

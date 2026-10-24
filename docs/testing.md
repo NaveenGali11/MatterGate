@@ -1,69 +1,65 @@
 # Verification and acceptance evidence
 
-Last documented: October 24, 2026. This file separates executed evidence from
-tests that exist in source but have not been rerun after later edits.
+Last documented October 24, 2026. Results refer to the local 0.2.0 working tree
+based on initial commit ff6c68b, with uncommitted Evidence & Review changes.
 
-## Recorded evidence
+## Executed results
 
-| Evidence | Result | Qualification |
+| Check | Result | Qualification |
 |---|---|---|
-| Initial local automated baseline | 73 passed; one Starlette/HTTPX deprecation warning | Executed before later model, cited-statement, evaluator and UI edits |
-| Initial browser walkthrough | Fixture draft, human review and safe denial worked | Agent-observed desktop walkthrough before final typography changes |
-| Live NVIDIA/Nebius walkthrough | Operator showed Ready for review, 10/10 checks and hash-chain verification | Current cited-statement contract; run prefix `358410d3` |
-| Live human approval | Operator confirmed Approved and REVIEW SUBMITTED | Human confirmation in the guided walkthrough |
-| Restricted-request scenario | Operator confirmed the expected denial result after following the scenario instructions | Latest confirmation, not a new automated test run |
-| Latest automated suite / GitHub Actions | Not rerun / not observed | Must be executed and inspected before claiming current tests or CI pass |
-| Hosted judge demo / video | Not provided yet | Publication/submission work remains |
+| Current automated suite | 101 passed | Fixture data, temporary databases and mocked HTTP transport; no paid inference |
+| Browser end-to-end | Passed | Isolated headless Microsoft Edge: fixture request, inline reference and return focus, Alex switch, approval, receipt download, Jordan return and denial |
+| Responsive checks | 32 passed | Eight routes at 1440, 1024, 768 and 390 CSS-pixel widths; no page-wide overflow; visible content text at least 12px |
+| Text contrast sample | Passed | Rendered Overview text foreground/background checks against 4.5:1 normal / 3:1 large text; not a comprehensive accessibility audit |
+| Zoom reflow | Four routes passed | 200% CSS zoom on request, review, brief and receipt; native browser zoom remains untested |
+| Keyboard | Passed focused scenarios | Skip-to-content, citation focus and return-to-claim; not every assistive-technology combination |
+| Existing persisted records | Passed automated reopen check | Approved decision, evidence and audit unchanged after reopening the database |
+| Package exclusions | Passed | Archive omits private/local state, symlinks, logs and local planning package; reproducible bytes checked |
+| Extracted test build | 101 passed; 83 source/assets files hashed | Executed from the extracted archive using the already installed pinned environment; not a fresh dependency installation |
+| Earlier live NVIDIA/Nebius flow | Operator confirmed success | Run prefix 358410d3 predates this UI/diagnostics upgrade; 10/10 controls, approval and REVIEW SUBMITTED |
+| Current remote CI | Not inspected for this working tree | Publish a reviewed revision and inspect its actual workflow |
+| Repeat paid live trials | Pending joint test | No live provider call made for this upgrade |
+| Public judge access / video | Pending | Local archive is not an uploaded test-build link |
 
-The live screenshots preserve the brief, pending-review panel and audit view.
-They precede the operator's subsequent approval confirmation. See
-[images](images/README.md). They are demonstration evidence, not a benchmark dataset.
+The original baseline was 73 tests; the pre-upgrade working tree passed 81.
+The expanded suite now passes 101. One Starlette/HTTPX deprecation warning remains.
+This warning was not suppressed or resolved through an unrelated dependency change.
 
-## Run the suite
+Browser QA found and corrected a citation-focus problem and mobile table overflow
+before the final pass. Temporary screenshots and raw reports are local ignored
+artifacts. Selected clearly labeled fixture screenshots are in [images](images/README.md).
+
+## Reproduce local checks
 
 ~~~sh
-.venv/bin/python -m pytest
+.venv/bin/python -m pytest -o addopts='' -q
 ~~~
 
-Tests use temporary databases, fixtures and mocked HTTP transport; they do not make
-paid live inference calls. Do not use a fresh result from an earlier revision as
-evidence for a later revision.
+The suite tests policy precedence and scope isolation, retrieval budgets, content
+hashes, strict parsing, citation linkage, known attack-string controls, review
+authorization/conflicts/transaction rollback, CSRF, read access, restart behavior,
+bounded transport failures/repair, safe diagnostics, receipt access/export,
+legacy counters, inline mappings, history filters and package exclusions.
 
-The CI workflow in `.github/workflows/tests.yml` uses Python 3.14, installs the
-pinned dependencies and runs pytest. There is no published CI result yet.
+No test makes a paid model call. CI uses the pinned Python/dependency setup in
+.github/workflows/tests.yml. A local pass is not a remote CI result.
 
-## Coverage present in source
+## Joint acceptance remaining
 
-- Explicit-block precedence, missing context, unresolved conditions, invalid policy shape.
-- Supported actor/matter/purpose combinations and explicit scope expiry/dimension checks.
-- Retrieval authorization, evidence budgets, FTS escaping and scoped ranking isolation.
-- Exact source/chunk citation pairs, missing citations, unknown IDs and claim coverage.
-- Strict JSON, duplicate keys, malformed shape, exact disclosure and output limits.
-- Known injected-command/approval checks and independent application review-state validation.
-- Cited-statement projection with no invented links or dropped uncited conditions.
-- Actor spoofing, CSRF/origin checks, cross-requester reads and rate limiting.
-- All review outcomes, rationale rules, repeat/concurrent decisions and atomic audit rollback.
-- Audit immutability/tampering, source-text tampering and restart interruption handling.
-- Nebius request shape, thinking-off option, HTTP failures, timeout cancellation and bounded repair.
-- Fixture byte/hash integrity and rejection of unsupported requests.
-- HTML escaping of untrusted model content.
+Use [the release walkthrough](release-guide.md) on the normal local server:
 
-Some of these were added after the 73-test baseline and remain unexecuted.
-Coverage in source is not a claim that every case currently passes.
+1. Complete a real live seeded request and inspect actual request ID, safe token
+   data, latency and measured transport attempts.
+2. Inspect every material claim against its source, including unsupported certainty
+   or missing facts. Structural linkage does not establish source support.
+3. Record Alex's intended disposition and inspect REVIEW SUBMITTED.
+4. Check denial has zero measured attempts and no restricted evidence.
+5. Try native 200% browser zoom and an actual mobile browser/device.
+6. If doing a five-trial live rehearsal, keep every result and report the small
+   sample honestly; do not replace failed runs with fixtures.
+7. Have willing target-role users attempt the flow without coaching. No usability
+   study, legal-quality review, time-saving benchmark or customer adoption is
+   claimed by the automated walkthrough.
 
-## Manual acceptance for a new revision
-
-1. Use a fresh database path and start one local worker.
-2. With no Nebius key, run the exact seeded fixture and inspect labels, evidence and checks.
-3. Run restricted M&A as Jordan; inspect the absence of retrieval/provider events.
-4. With a valid private key, run the seeded question in live mode.
-5. Confirm provider/model/request metadata, ten checks and Ready for review.
-6. Review as Alex; inspect the final state and REVIEW_SUBMITTED.
-7. Verify a non-reviewer cannot submit a review and an already-decided run cannot be decided again.
-8. Inspect an evaluation-blocked run: no generated brief is rendered.
-9. Refresh after restarting; verify completed runs persist and interrupted active runs block.
-10. Check keyboard operation and narrow-screen layout. A dedicated mobile-browser
-    acceptance pass is still outstanding.
-
-There is no claim of legal correctness, comprehensive attack resistance,
-production load qualification, protected holdout testing or statistical reliability.
+No claim of production load qualification, general prompt-injection immunity,
+legal correctness or externally anchored audit integrity is made.

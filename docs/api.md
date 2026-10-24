@@ -181,3 +181,26 @@ not establish factual correctness.
 
 A provider or evaluation failure usually appears in a persisted run state rather
 than as a failed initial POST. Poll the run and inspect its reason/checks.
+
+## Safe receipt download — 0.2.0
+
+`GET /api/runs/{run_id}/receipt` rechecks the same owner/Alex read permission
+and audit/evidence integrity as the run view. It returns a JSON attachment with
+`receipt_version`, run/scope labels, evidence count (omitted as null for denial),
+structural check totals, safe provider metadata, review disposition/time and
+local audit head. It excludes question text, excerpts, prompts, credentials and
+review rationale. The export is sanitized, not anonymous.
+
+`retrieval_attempts` counts instrumented retrieval invocations; `provider_attempts`
+counts transport entries, including a JSON regeneration attempt. Historical runs
+without instrumentation return null, never a fabricated zero.
+`provider_completed` requires a recorded MODEL_COMPLETED event; a failed
+provider_json diagnostic record does not imply successful live execution.
+
+Failure categories now distinguish `PROVIDER_AUTH_ERROR` (401/403),
+`PROVIDER_RATE_LIMITED` (429), other unsuccessful HTTP responses, timeout,
+incomplete output and invalid response. Optional diagnostics are strictly
+allowlisted; unavailable fields are omitted.
+
+Overview accepts `?filter=all|review|completed|failed` for the existing
+identity-scoped history. This changes presentation only, not read permission.

@@ -10,6 +10,7 @@ from app.config import ROOT
 from app.domain import ControlError, Status, TRANSITIONS, now
 
 SAFE_FIELDS = {"status", "reason_code", "policy_decision", "policy_version", "source_ids", "chunk_ids", "mode", "provider", "model_id", "request_id", "latency_ms", "checks", "decision", "prompt_hash", "prompt_version", "fixture_version", "fixture_hash", "count", "attempt", "note_code"}
+SAFE_FIELDS |= {"instrumentation_version", "transport_observed", "http_status", "finish_reason", "input_tokens", "output_tokens", "outcome"}
 
 
 def canonical(value):

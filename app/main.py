@@ -18,6 +18,7 @@ from app.persistence.db import Database
 from app.seed import USERS, seed
 from app.services.runs import RunService
 from app.services.review import decide, ReviewConflict
+from app.services.presentation import guidance, evidence_view, receipt
 
 
 def create_app(settings=None, *, database=None, live_provider=None, fixture_provider=None):
@@ -68,15 +69,21 @@ def create_app(settings=None, *, database=None, live_provider=None, fixture_prov
             "provider":"nebius" if settings.live_ready else "fixture","model_id":settings.model,
             "database_ready":db.one("SELECT count(*) AS n FROM sources")["n"] >= 6,
             "seed_data_version":"1.0","live_configured":settings.live_ready,
-            "live_verified":bool(db.one("SELECT 1 FROM research_runs WHERE mode='live' AND provider_json IS NOT NULL AND json_extract(provider_json,'$.provider')='nebius' LIMIT 1")),
+            "live_verified":bool(db.one("SELECT 1 FROM research_runs r JOIN audit_events a USING(run_id) WHERE r.mode='live' AND a.event_type='MODEL_COMPLETED' AND json_extract(r.provider_json,'$.provider')='nebius' LIMIT 1")),
             "upstream_commit":"21baa4ccdc468bd6a30681344eb8ec3df752790a"}
 
     def render(request,name,**context):
         actor = session(request)["actor"]
-        runs = db.rows("SELECT run_id,actor_id,matter_id,status,mode,created_at FROM research_runs "+("" if actor == "alex_reviewer" else "WHERE actor_id=? ")+"ORDER BY created_at DESC LIMIT 12",() if actor == "alex_reviewer" else (actor,))
+        runs = db.rows("SELECT run_id,actor_id,matter_id,status,mode,created_at FROM research_runs "+("" if actor == "alex_reviewer" else "WHERE actor_id=? ")+"ORDER BY created_at DESC,run_id DESC",() if actor == "alex_reviewer" else (actor,))
+        history_filter = request.query_params.get("filter","all")
+        groups = {"all":None,"review":{"READY_FOR_REVIEW"},"completed":{"APPROVED","REJECTED","REVISION_REQUESTED"},"failed":{"DENIED","BLOCKED","MODEL_UNAVAILABLE"}}
+        if history_filter not in groups:
+            history_filter = "all"
+        ledger = [item for item in runs if groups[history_filter] is None or item["status"] in groups[history_filter]]
         return templates.TemplateResponse(request=request,name=name,context={
             "actor_id":actor,"user":USERS[actor],"users":USERS,"csrf":request.session["csrf"],
-            "system":status(),"disclosure":DISCLOSURE,"runs":runs,"question":QUESTION,**context})
+            "system":status(),"disclosure":DISCLOSURE,"runs":runs,"ledger":ledger,
+            "history_filter":history_filter,"question":QUESTION,**context})
 
     @app.middleware("http")
     async def security_headers(request,call_next):
@@ -123,6 +130,14 @@ def create_app(settings=None, *, database=None, live_provider=None, fixture_prov
     @app.get("/api/runs/{run_id}")
     def get_run(run_id: str,request: Request):
         return view(request,run_id)
+
+    @app.get("/api/runs/{run_id}/receipt")
+    def export_receipt(run_id: str,request: Request):
+        safe = receipt(view(request,run_id))
+        # The database-generated UUID is validated before it is used in a header.
+        from uuid import UUID
+        filename = str(UUID(safe["run_id"]))
+        return JSONResponse(safe,headers={"Content-Disposition":f'attachment; filename="mattergate-{filename}-receipt.json"'})
 
     class ReviewBody(BaseModel):
         model_config = ConfigDict(extra="forbid")
@@ -173,7 +188,8 @@ def create_app(settings=None, *, database=None, live_provider=None, fixture_prov
         if tab not in {"progress","brief","review","audit"}:
             raise HTTPException(404)
         run = view(request,run_id)
-        return render(request,"run.html",page="run",run=run,tab=tab)
+        return render(request,"run.html",page="run",run=run,tab=tab,
+                      guidance=guidance(run),reading=evidence_view(run),receipt=receipt(run))
 
     return app
 

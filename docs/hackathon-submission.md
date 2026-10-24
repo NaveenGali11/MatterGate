@@ -127,8 +127,8 @@ Earlier blocked runs remained visible, showing the real failure history.
 - A reproducible, clearly labeled offline fixture path.
 
 These are workflow observations, not legal-quality, compliance or production
-security guarantees. The latest automated suite still needs to be rerun after
-the later edits; the previous baseline was 73 passing tests.
+security guarantees. The upgraded local working tree passes 101 automated tests
+and the fixture browser workflow; repeat live validation of this revision remains pending.
 
 ## What was learned
 
@@ -142,8 +142,9 @@ citation checks do not establish that a legal proposition is true.
 
 ## What's next
 
-Rerun and inspect the latest tests, complete narrow-screen QA and repeated live
-rehearsals, provide judge access, and record the demo. Product work beyond the
+Verify CI for the published revision, repeat live rehearsals on the upgrade,
+provide judge access and record the demo. Narrow-screen browser QA and a local
+source test-build package are now prepared. Product work beyond the
 hackathon would require real authentication, source administration, substantive
 evidence evaluation, operational controls and separately designed deployment.
 

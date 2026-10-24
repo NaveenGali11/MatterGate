@@ -16,11 +16,11 @@ a separate human reviewer records the decision.
 [Architecture](docs/architecture.md) · [API](docs/api.md) ·
 [Verification](docs/testing.md) · [Hackathon brief](docs/hackathon-submission.md)
 
-![Live research brief with scoped evidence and Ready for review status](docs/images/live-brief.png)
+![Evidence beside each claim in the updated research workspace](docs/images/evidence-workspace.png)
 
-*User-supplied screenshot from the successful local live demonstration on
-October 24, 2026. The content is synthetic; passing structural checks is not a
-finding of legal accuracy.*
+*Current interface, captured from a clearly labeled offline fixture during browser QA.
+The earlier successful live demonstration is preserved in [live screenshots](docs/images/README.md).
+Passing structural checks is not a finding of legal accuracy.*
 
 ## What it does
 
@@ -45,10 +45,14 @@ in the audit view. The operator then confirmed **Approved** and
 **REVIEW SUBMITTED**, and subsequently confirmed the blocked-request scenario.
 The observed live run is identified by prefix `358410d3`.
 
-The initial automated baseline was **73 passing tests** before subsequent model,
-cited-statement, evaluator and interface edits. Tests were added and updated
-afterward, but the latest suite has **not** been rerun. No current green-CI claim
-is made. See [verification evidence](docs/testing.md).
+The upgraded working tree passes **101 automated tests** using fixture and mocked
+transport data. Browser QA completed the fixture/review/denial/download flow and
+32 screen/viewport checks. No paid live calls were made for this upgrade, and no
+current remote CI claim is made. See [verification evidence](docs/testing.md).
+
+Version 0.2.0 adds inline evidence, clear state guidance, safe diagnostics, measured
+attempts, history filters and a downloadable run receipt. See the
+[local test and build guide](docs/release-guide.md).
 
 ## Start locally
 

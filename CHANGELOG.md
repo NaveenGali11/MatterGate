@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.2.0 — Evidence & Review — 2026-10-24
+
+- State-specific explanations and next actions; draft approval explicitly separated
+  from permission for business action.
+- Inline citations, focused authorized excerpts and return-to-claim navigation.
+- Safe, validated provider diagnostics and explicit auth/rate-limit/timeout failures.
+- Measured retrieval and transport attempts, including bounded regeneration;
+  legacy counters remain Not recorded.
+- Readable run receipt, expandable audit metadata and authorized JSON export.
+- Identity-scoped history filters with mode/time context.
+- Consolidated typography, contrast, responsive layouts and keyboard navigation.
+- Reproducible source test-build archive excluding private runtime files and local plans.
+- 101 local tests pass; fixture browser workflow and 32 viewport/screen checks pass.
+  The new revision has not made a paid live inference call or been published.
+
+Current limitations and test instructions are in docs/release-guide.md. Native
+browser zoom, real-device testing, target-role validation and repeat live trials
+remain pending. Older entries below describe their original milestone.
+
 ## 0.1.0 — Hackathon MVP — 2026-10-24
 
 ### Implemented

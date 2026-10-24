@@ -25,7 +25,12 @@ async function switchIdentity(actor) {
 }
 document.getElementById('identity')?.addEventListener('change', async event => {
   event.target.disabled = true;
-  try {await switchIdentity(event.target.value); window.location.assign('/');}
+  try {
+    const target = event.target.value, owner = document.querySelector('[data-owner]')?.dataset.owner;
+    await switchIdentity(target);
+    if (document.getElementById('run-state') && (target === 'alex_reviewer' || target === owner)) window.location.reload();
+    else window.location.assign('/');
+  }
   catch (error) {toast(error.message); event.target.disabled = false;}
 });
 document.getElementById('switch-reviewer')?.addEventListener('click', async event => {
@@ -81,7 +86,31 @@ if (run && ['RECEIVED','POLICY_EVALUATING','SCOPE_GRANTED','RETRIEVING','DRAFTIN
   window.setTimeout(poll, 800);
 }
 function revealEvidence() {
-  const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-  if (target?.tagName === 'DETAILS') target.open = true;
+  let id;
+  try {id = decodeURIComponent(location.hash.slice(1));} catch {return;}
+  const target = document.getElementById(id);
+  if (!target) return;
+  if (target.tagName === 'DETAILS') target.open = true;
+  const container = target.closest('details');
+  if (container) container.open = true;
 }
 window.addEventListener('hashchange', revealEvidence); revealEvidence();
+document.querySelectorAll('[data-evidence-link]').forEach(link => link.addEventListener('click', event => {
+  const source = document.getElementById(link.hash.slice(1));
+  if (!source) return;
+  event.preventDefault();
+  source.open = true;
+  const back = source.querySelector('.return-to-claim');
+  back.href = '#' + link.dataset.return; back.hidden = false;
+  history.replaceState(null, '', link.hash);
+  source.scrollIntoView({block: 'nearest'});
+  source.querySelector('.excerpt').focus({preventScroll: true});
+}));
+document.querySelectorAll('.return-to-claim').forEach(link => link.addEventListener('click', event => {
+  const target = document.getElementById(link.hash.slice(1));
+  if (!target) return;
+  event.preventDefault();
+  history.replaceState(null, '', link.hash);
+  target.scrollIntoView({block: 'nearest'});
+  target.focus({preventScroll: true});
+}));

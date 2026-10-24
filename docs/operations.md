@@ -12,7 +12,9 @@ only a browser refresh; Cmd+Shift+R forces a refresh on the demonstrated Mac set
 | `DENIED` | Policy did not permit the request | Check the intended seeded scenario; fixture mode is not a bypass |
 | `EVALUATION_FAILED` | One or more output controls failed | Read the individual check reasons; create a new run after fixing the cause |
 | `PROVIDER_NOT_CONFIGURED` / live form disabled | Missing key or invalid endpoint/model settings | Inspect configuration locally; never share the key |
-| `PROVIDER_HTTP_ERROR` | Provider returned a non-200 response | Check account/key, credits, model and endpoint in Nebius |
+| `PROVIDER_AUTH_ERROR` | Provider returned 401/403 | Check the private server key and account access |
+| `PROVIDER_RATE_LIMITED` | Provider returned 429 | Wait, then explicitly start a new run |
+| `PROVIDER_HTTP_ERROR` | Other non-200 provider response | Check provider availability, model and account access |
 | `PROVIDER_TIMEOUT` | Total generation deadline expired | Check provider availability and retry explicitly |
 | `PROVIDER_INCOMPLETE_OUTPUT` | Provider finish reason was not stop | Inspect safe finish/token metadata; do not treat partial JSON as a brief |
 | `PROVIDER_INVALID_RESPONSE` | Transport/response shape could not be accepted | Check endpoint/provider compatibility |

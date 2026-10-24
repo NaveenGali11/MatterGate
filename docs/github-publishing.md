@@ -1,12 +1,13 @@
 # Publish MatterGate to GitHub
 
-This is a manual publication guide. No repository was created, committed, pushed,
-made public or deployed while preparing this documentation.
+This is a manual publication guide. The initial commit is published at
+https://github.com/NaveenGali11/MatterGate. Later working-tree changes still need
+review, commit and push; publication does not deploy the app.
 
 ## Before the first public commit
 
-1. Run the latest local tests and inspect the result. The recorded 73-pass baseline
-   predates the later changes; do not add a current passing badge without evidence.
+1. Run the latest local tests and inspect CI for the exact publication revision.
+   Local 0.2.0 verification is recorded in testing.md; it is not a remote-CI result.
 2. Review the files you intend to stage. Keep `.env`, all local secret variants,
    session secrets, `.venv`, SQLite files, runtime data and logs out of Git.
 3. Keep `.env.example`, `requirements.lock`, source, tests, documentation and all
@@ -54,7 +55,7 @@ git init -b main
 Stage the known publication files explicitly:
 
 ~~~sh
-git add .gitignore .env.example pyproject.toml requirements.lock LICENSE README.md CHANGELOG.md CONTRIBUTING.md SECURITY.md BUILD_PLAN.md mattergate-prd.md app tests docs third_party .github
+git add .gitignore .env.example pyproject.toml requirements.lock LICENSE README.md CHANGELOG.md CONTRIBUTING.md SECURITY.md BUILD_PLAN.md mattergate-prd.md app tests docs third_party .github scripts
 git status --short
 git diff --cached --stat
 ~~~

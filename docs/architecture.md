@@ -124,3 +124,19 @@ An operator-run live request has completed all ten controls and human review;
 the latest denial scenario was also confirmed. The automated baseline and remaining
 unexecuted tests are recorded separately in [testing.md](testing.md). One demonstrated
 run does not establish repeatability, legal quality or general service availability.
+
+## Evidence & Review presentation and observability
+
+The presentation service derives guidance, exact inline references and the safe
+receipt from accepted run records. It does not generate claims, infer citations
+or alter the state machine. A new receipt endpoint reuses the run read/integrity gate.
+
+New RUN_CREATED events declare instrumentation capability. RETRIEVAL_STARTED
+records an attempted retrieval invocation, and TRANSPORT_ATTEMPTED is appended
+at each Nebius transport entry. Receipt counters derive from these instrumented
+events; historical records without capability metadata remain unknown.
+
+Provider exceptions carry validated metadata, never raw response bodies. A failed
+call may therefore have provider_json, while live verification still requires a
+MODEL_COMPLETED event. This is additive audit metadata with no schema migration,
+and old chained events/decisions are not rewritten.

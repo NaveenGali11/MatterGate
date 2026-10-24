@@ -35,7 +35,7 @@ human approval nor proof of legal accuracy.
 ## Inspect the brief
 
 The brief contains scope, summary, conditions, caveats, questions and a draft
-recommendation. Claim links open the relevant evidence excerpt. Sources show
+recommendation. Numbered links beside each material statement open and focus the relevant evidence excerpt. Use Return to the claim to resume reading. Sources show
 classification, authority tier, source/chunk IDs, version and content hash.
 
 Each live material statement carries chunk IDs in the provider response. The
@@ -81,9 +81,11 @@ Unsupported custom fixture requests block with `FIXTURE_SCENARIO_UNSUPPORTED`.
 Change the question only in live mode; purpose/matter combinations remain subject
 to the small policy matrix.
 
-## Inspect the audit
+## Inspect the run receipt and audit
 
-Events show safe metadata, timestamps and chained hashes. Source bodies, full
+The Run receipt tab summarizes permission, selected evidence, structural controls, provider execution and the human disposition. New runs show measured retrieval/transport attempts; older records say Not recorded. The permission-checked receipt download excludes questions, excerpts, prompts, credentials and rationale. It still contains run and demo-identity metadata.
+
+Expand an audit event to inspect safe metadata, timestamps and chained hashes. Source bodies, full
 prompts, free-text rationale and credentials are excluded from event payloads.
 The review rationale is stored separately with the review decision.
 
