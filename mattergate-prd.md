@@ -269,7 +269,8 @@ Run creation does not synchronously return Ready for review or Denied. Clients p
 | Inline evidence, receipt download and filters | Operator confirmed working |
 | Unsupported custom fixture guidance | Operator screenshot confirmed `FIXTURE_SCENARIO_UNSUPPORTED`, run `caf19e58` |
 | Native 200% request-form zoom | Operator confirmed readable with no overlap |
-| Multiple live trials, real mobile device, target-role study, current remote CI | Not established by this acceptance session |
+| GitHub CI, inspected October 28 | Passed for `552a5fa`; later revisions require their own check |
+| Multiple live trials, real mobile device, target-role study | Not established by the acceptance session |
 
 Use [testing](docs/testing.md) for detailed qualifications. Do not imply all reliability, accessibility or legal-quality questions are closed.
 

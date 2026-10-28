@@ -10,6 +10,7 @@ Follow [setup](docs/setup.md), then run:
 
 ~~~sh
 .venv/bin/python -m pytest
+.venv/bin/python scripts/check_release.py
 ~~~
 
 Use temporary databases and synthetic fixtures. A normal test run must not require

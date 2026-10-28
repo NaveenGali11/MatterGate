@@ -11,7 +11,14 @@ identities, not a public production service.
 
 ## Install
 
-Clone/download the public repository, enter its root, then:
+Clone or download the repository. For a new checkout:
+
+~~~sh
+git clone https://github.com/NaveenGali11/MatterGate.git
+cd MatterGate
+~~~
+
+Then install the pinned dependencies:
 
 ~~~sh
 uv venv --python python3
@@ -25,9 +32,9 @@ python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.lock -e .
 ~~~
 
-These are instructions for you to execute; documentation preparation did not
-execute them. The existing lock was resolved on macOS/Python 3.14. It pins runtime
-and development dependencies; it is not a cross-platform reproducibility guarantee.
+The lock was resolved on macOS/Python 3.14 and has also been installed by the
+passing Ubuntu/Python 3.14 CI workflow. It pins runtime and development dependencies;
+it is not a guarantee for every Python version or platform.
 
 ## Configure
 

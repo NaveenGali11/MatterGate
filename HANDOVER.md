@@ -148,7 +148,7 @@ The implemented 0.2.0 source passed **101 automated tests**, including mocked pr
 
 An isolated headless Edge walkthrough completed the fixture, evidence-navigation, human-review, receipt-download and denial flow. Thirty-two screen/viewport checks passed across eight routes at 1440, 1024, 768 and 390 CSS-pixel widths. Separate CSS-zoom reflow and focused keyboard checks passed. The extracted source build also passed 101 tests using the already installed dependency environment.
 
-One existing Starlette/HTTPX deprecation warning remains. A fresh dependency installation, real mobile-device acceptance and current remote CI verification are not established by these checks.
+One existing Starlette/HTTPX deprecation warning remains. Real mobile-device acceptance and a fresh local dependency installation are not established by these browser checks. On October 28, GitHub CI was independently confirmed successful for `552a5fa` and the earlier implementation commits; later revisions require their own result.
 
 ### Operator-confirmed live acceptance
 
@@ -197,7 +197,7 @@ To validate or package:
 
 ~~~sh
 .venv/bin/python -m pytest -o addopts='' -q
-.venv/bin/python scripts/package_release.py
+.venv/bin/python scripts/check_release.py
 ~~~
 
 The archive is generated at `dist/mattergate-test-build.zip`. It is a source test build, not a standalone executable. Documentation changes made after packaging require rebuilding it before distribution; its old manifest cannot describe new files.

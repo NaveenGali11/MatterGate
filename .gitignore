@@ -9,8 +9,16 @@ __pycache__/
 data/
 *.sqlite3*
 *.log
+*.db
+*.db-wal
+*.db-shm
+*.pem
+*.key
+*.p12
+*.pfx
 logs/
 .DS_Store
+Thumbs.db
 
 # Local upgrade planning package; excluded from the public repository.
 /docs/upgrades/
@@ -21,3 +29,5 @@ logs/
 /docs/archive/
 *.prompt.txt
 /matter_gate_thumbnail.png
+/output/
+/tmp/pdfs/

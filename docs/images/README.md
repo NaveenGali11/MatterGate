@@ -16,13 +16,12 @@ is synthetic/public.
 | [Restricted request](devpost/05-permission-boundary.jpg) | Older denial record with its missing-counter limitation visible |
 | [Project thumbnail](devpost/mattergate-thumbnail.png) | AI-generated promotional artwork; not a product screenshot |
 
-## Earlier verification images
+## Capture notes
 
-The existing `live-brief.png`, `live-review.png` and `live-audit.png` are earlier
-operator screenshots, before approval was subsequently confirmed. They include
-browser/desktop chrome. `evidence-workspace.png` and `run-receipt.png` are clearly
-labeled offline-fixture captures from an isolated synthetic QA database.
-`../preview.png` is an initial fixture-era preview.
+The gallery retains the current product views used in the walkthrough. Earlier
+fixture and desktop captures have been removed from the current source tree to
+avoid duplicate, outdated images. Historical verification remains described in
+[testing](../testing.md); screenshots are reference material, not new test results.
 
-These earlier images document their original milestone. Fixture captures are
-not evidence of live inference, and passing checks do not establish legal accuracy.
+Passing structural checks does not establish legal accuracy. The thumbnail is
+promotional artwork and is not evidence of application behavior.

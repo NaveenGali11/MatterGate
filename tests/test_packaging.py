@@ -13,7 +13,9 @@ def test_test_build_excludes_local_package_and_private_state(tmp_path):
                  ".env","app/.env.local","data/state.sqlite3","docs/upgrades/README.md",".venv/lib/secret.py",
                  "app/__pycache__/cached.pyc","docs/debug.log","app/private.key","app/old.sqlite3-wal",
                  "docs/archive/mattergate-prd-v1.md","docs/images/devpost/mattergate-thumbnail.prompt.txt",
-                 "matter_gate_thumbnail.png"):
+                 "matter_gate_thumbnail.png", "docs/.DS_Store", "docs/.local-notes",
+                 "docs/Thumbs.db", "app/certificate.p12", "app/backup.pfx",
+                 "app/state.db-wal", "app/state.db-shm", "output/pdf/guide.pdf", "tmp/pdfs/preview.png"):
         file = tmp_path/name; file.parent.mkdir(parents=True,exist_ok=True); file.write_text(name)
     (tmp_path/"app/linked.py").symlink_to(tmp_path/".env")
     result = package.build(tmp_path)

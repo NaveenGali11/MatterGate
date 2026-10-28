@@ -1,14 +1,15 @@
 # Verification and acceptance evidence
 
-Last documented October 24, 2026. Browser and operator results refer to the
-implemented 0.2.0 release (implementation commit `a7cba1b`). Local automated
-results and archive checks are recorded separately below.
+Last updated October 28, 2026. Browser/operator results below were recorded on
+October 24 for application version 0.2.0. The October 28 public-source cleanup
+changes documentation, image selection, source packaging and CI checks; it does
+not change the application runtime.
 
 ## Executed results
 
 | Check | Result | Qualification |
 |---|---|---|
-| Current automated suite | 101 passed | Fixture data, temporary databases and mocked HTTP transport; no paid inference |
+| Local automated suite, October 28 | 101 passed | Fixture data, temporary databases and mocked HTTP transport; includes expanded packaging exclusions; no paid inference |
 | Browser end-to-end | Passed | Isolated headless Microsoft Edge: fixture request, inline reference and return focus, Alex switch, approval, receipt download, Jordan return and denial |
 | Responsive checks | 32 passed | Eight routes at 1440, 1024, 768 and 390 CSS-pixel widths; no page-wide overflow; visible content text at least 12px |
 | Text contrast sample | Passed | Rendered Overview text foreground/background checks against 4.5:1 normal / 3:1 large text; not a comprehensive accessibility audit |
@@ -18,31 +19,38 @@ results and archive checks are recorded separately below.
 | Package exclusions | Passed | Archive omits private/local state, symlinks, logs and local planning package; reproducible bytes checked |
 | Earlier extracted test build | 101 passed; 83 source/assets files hashed | Executed from the extracted archive using the already installed pinned environment; not a fresh dependency installation |
 | Earlier live NVIDIA/Nebius flow | Operator confirmed success | Run prefix 358410d3 predates this UI/diagnostics upgrade; 10/10 controls, approval and REVIEW SUBMITTED |
-| Current remote CI | Not inspected for this working tree | Publish a reviewed revision and inspect its actual workflow |
+| Completed GitHub CI, inspected October 28 | Passed for `552a5fa`, `a7cba1b` and `ff6c68b` | [Latest inspected run](https://github.com/NaveenGali11/MatterGate/actions/runs/40139797857); this result predates the new release-check step |
 | Updated live acceptance | Operator confirmed run 08126a78 | HTTP 200 / stop; 1,678 input and 302 output tokens; 1,515 ms provider latency; one retrieval and one transport attempt; five excerpts; 10/10 checks; Research draft approved |
 | New interface acceptance | Operator confirmed | Inline citation/return navigation, receipt JSON download, history filters and unsupported-custom-fixture guidance |
 | Repeated live sample | Pending | One updated live acceptance run is not a repeated reliability sample |
 | Public judge access / video | Pending | Local archive is not an uploaded test-build link |
 
-The original baseline was 73 tests; the pre-upgrade working tree passed 81.
-The expanded suite was rerun during public-repository preparation: **101 passed**.
-The refreshed source archive passed ZIP integrity and all 92 manifest hash checks;
-exclusion checks confirmed private plans, historical drafts, generation prompts,
-credentials and runtime state are absent. Common credential-pattern scanning
-found no matches in packaged text files. All 23 public Markdown files passed
-local link/image-reference checks. These are focused checks, not a security audit.
+## Public-source cleanup checks - October 28
 
-One Starlette/HTTPX deprecation warning remains.
-This warning was not suppressed or resolved through an unrelated dependency change.
+- Local automated suite: **101 passed**, one existing Starlette/HTTPX deprecation warning.
+- `scripts/check_release.py`: **24 Markdown files**, local link/image targets,
+  **seven unique PriviLAB adaptation hashes**, license notices and **87 archive files** checked.
+- The source ZIP passed integrity and manifest hash checks. Packaging regressions
+  cover private plans, historical drafts, generation prompts, hidden local files,
+  database sidecars, key/certificate files, output and temporary PDF assets.
+- Three reachable Git commits and 121 unique text blobs were scanned for common
+  credential patterns and sensitive runtime paths. No matches were found. This
+  is a focused check, not a guarantee or a comprehensive security audit.
+- Six redundant earlier images were removed from the current public tree. The
+  current gallery and thumbnail remain, with mode and provenance captions.
+- Completed GitHub CI was verified through the authenticated GitHub CLI. The
+  workflow now also runs release validation with read-only repository permissions.
+  Check the result for the final cleanup commit separately.
 
-Browser QA found and corrected a citation-focus problem and mobile table overflow
-before the final pass. Temporary screenshots and raw reports are local ignored
-artifacts. Selected clearly labeled fixture screenshots are in [images](images/README.md).
+The historical browser checks found and corrected citation focus and mobile table
+overflow before their final pass. Those checks have not been rerun during this
+source/documentation cleanup. Selected product screenshots are in [images](images/README.md).
 
 ## Reproduce local checks
 
 ~~~sh
 .venv/bin/python -m pytest -o addopts='' -q
+.venv/bin/python scripts/check_release.py
 ~~~
 
 The suite tests policy precedence and scope isolation, retrieval budgets, content

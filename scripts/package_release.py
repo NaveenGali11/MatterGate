@@ -30,6 +30,10 @@ def release_files(root):
             continue
         if not path.is_file():
             continue
+        if path.name.startswith(".") and relative.as_posix() not in {".env.example", ".gitignore"}:
+            continue
+        if path.name == "Thumbs.db":
+            continue
         if len(relative.parts) == 1:
             if relative.name not in ROOT_FILES:
                 continue
@@ -37,7 +41,7 @@ def release_files(root):
             continue
         if path.name.startswith(".env") and relative.as_posix() != ".env.example":
             continue
-        if path.suffix in {".log", ".sqlite3", ".db", ".pem", ".key"} or ".sqlite3" in path.name:
+        if path.suffix in {".log", ".sqlite3", ".db", ".pem", ".key", ".p12", ".pfx"} or ".sqlite3" in path.name or path.name.endswith((".db-wal", ".db-shm")):
             continue
         yield relative, path.read_bytes()
 

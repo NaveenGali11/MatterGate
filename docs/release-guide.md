@@ -54,10 +54,11 @@ They did not add runs to the normal application database or make paid calls.
 ## Build a source test archive
 
 ~~~sh
-.venv/bin/python scripts/package_release.py
+.venv/bin/python scripts/check_release.py
 ~~~
 
-The output is `dist/mattergate-test-build.zip` plus its printed SHA-256.
+This validates local Markdown/image targets, PriviLAB adaptation hashes and license
+notices, then builds and checks `dist/mattergate-test-build.zip` and prints its SHA-256.
 The archive includes a SHA-256 manifest and reproducible source/assets/setup
 instructions. It excludes `.env`, local databases, caches, keys, logs, generated
 artifacts and the local planning directory. Extract it, follow [setup](setup.md),
@@ -66,8 +67,8 @@ and start one worker.
 This is a local artifact, not an uploaded release or public judge-access URL.
 Live inference still needs server-side Nebius credentials; fixture mode does not.
 The operator confirmed native 200% browser zoom on the request form. Target-role
-validation, repeated live trials, real mobile-device checks and current remote CI
-verification remain separate acceptance tasks. Rebuild the archive from the
+validation, repeated live trials and real mobile-device checks remain separate
+acceptance tasks. GitHub CI passed for `552a5fa`; verify later revisions separately. Rebuild the archive from the
 intended source revision before distributing it.
 
 ## Scope retained for later

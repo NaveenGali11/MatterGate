@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Fixture-first README walkthrough and the illustrated teammate testing guide.
+- Removed six redundant screenshots from the current source tree; retained the current gallery.
+- Expanded private/local packaging exclusions and added repeatable release validation to CI.
+- October 28 verification: 101 local tests passed; prior GitHub CI success recorded.
+
 - Product and engineering handover, revised PRD and current implementation roadmap.
 - Illustrated public READMEs with live product captures and a project thumbnail.
 - Public source packaging excludes historical drafts and image-generation working files.

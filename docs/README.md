@@ -3,10 +3,13 @@
 Start with the [product and engineering handover](../HANDOVER.md), then the
 [current PRD](../mattergate-prd.md) or [project README](../README.md).
 
+For a quick hands-on walkthrough, use the [teammate visual testing guide](team-testing-guide.md).
+
 | Document | Contents |
 |---|---|
 | [Setup](setup.md) | Environment, installation, configuration and local startup |
 | [User guide](user-guide.md) | Identities, scenarios, evidence, review and audit |
+| [Teammate testing](team-testing-guide.md) | Screenshot-led walkthrough, expected outcomes, guardrails and bug-report template |
 | [Architecture](architecture.md) | Trust boundaries, data flow, states and persistence |
 | [API](api.md) | Sessions, CSRF, run operations, review, status and draft formats |
 | [Testing](testing.md) | Recorded evidence, automated coverage and manual acceptance |

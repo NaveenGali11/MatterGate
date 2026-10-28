@@ -1,250 +1,180 @@
 # MatterGate
 
-<img src="docs/images/devpost/mattergate-thumbnail.png" alt="MatterGate — Permission before context" width="760">
+**Permission before context. Research with evidence. Human review.**
 
-**Permissioned legal research—policy before model context.**
+<img src="docs/images/devpost/mattergate-thumbnail.png" alt="MatterGate - Permission before context" width="680">
 
-MatterGate is a working research workflow for legal, privacy and compliance teams.
-It establishes who is asking, why they are asking, and which evidence they may
-use **before** retrieval or model inference. NVIDIA Nemotron on **Nebius Token
-Factory** drafts a cited research brief; application code checks the output, and
-a separate human reviewer records the decision.
+MatterGate is a legal/privacy research demonstration that checks who may use
+which evidence **before** retrieval or AI inference. NVIDIA Nemotron on **Nebius
+Token Factory** drafts a cited assessment; application code validates it, and a
+separate human reviewer records the decision.
 
-> Demonstration only. Uses synthetic internal documents and an attributed public
-> reference. It does not provide legal advice, make legal decisions, or establish
-> compliance.
+[Try locally](#try-locally-no-api-key-needed) ·
+[Visual testing guide](docs/team-testing-guide.md) ·
+[Architecture](docs/architecture.md) · [Gallery](docs/images/devpost/README.md) ·
+[Handover](HANDOVER.md)
 
-[Handover](HANDOVER.md) · [Current PRD](mattergate-prd.md) ·
-[Setup](docs/setup.md) · [User guide](docs/user-guide.md) ·
-[Architecture](docs/architecture.md) · [API](docs/api.md) ·
-[Verification](docs/testing.md) · [Hackathon overview](docs/hackathon-submission.md)
+> Uses synthetic internal documents and an attributed public reference. Demo
+> identities are freely selectable. This is not legal advice, production
+> authentication or a compliance certification.
 
-![Live research brief with authorized evidence beside each claim](docs/images/devpost/01-live-evidence-review.jpg)
+## Try locally - no API key needed
 
-*Actual live NVIDIA/Nebius run with synthetic/public evidence. The thumbnail above
-is promotional artwork; this workspace is a real product screenshot.
-[View the gallery](docs/images/devpost/README.md). Structural checks do not establish legal accuracy.*
+Use Python 3.14 for the environment verified locally and in CI. The project
+requires Python 3.12+ and SQLite FTS5; the entire version/platform range has not
+been qualified. No frontend build is required.
 
-## What it does
+In a **new checkout**:
 
-- Resolves requester, matter, purpose and jurisdiction into an explicit access scope.
-- Retrieves at most five authorized SQLite FTS5 chunks before building model context.
-- Calls `nvidia/Nemotron-3_5-Lightning` through Nebius Token Factory in live mode.
-- Produces a structured brief with claim-to-evidence links, caveats and open questions.
-- Runs ten deterministic checks before making a draft available for review.
-- Allows Alex, the seeded reviewer identity, to approve, reject or request revision.
-- Preserves safe event metadata in an append-only SQLite audit ledger with hash-chain verification.
-- Denies restricted requests before retrieval and provider invocation.
-- Offers an explicitly labeled fixture mode for reproducible offline demonstrations.
-
-This is a bounded application workflow. It does not browse the web, invoke
-model-selected tools, upload files, or approve its own output.
-
-## Verified demonstration
-
-On October 24, 2026, the operator completed updated live run `08126a78`:
-NVIDIA Nemotron on Nebius returned a complete draft, all **10 structural controls
-passed**, and a separate reviewer approved the research assessment.
-
-The receipt records **one provider transport attempt**, **302 output tokens** and
-**1,515 ms provider latency**. These are observations from one run, not a benchmark.
-Evidence navigation, receipt download, history filters and native 200% request-form
-zoom were also confirmed.
-
-![Live run receipt showing provider execution, checks and human disposition](docs/images/devpost/02-nebius-live-receipt.jpg)
-
-The release passed **101 local automated tests** using fixtures and mocked
-transports. Isolated browser QA completed the fixture/review/denial/download flow
-and 32 route/viewport checks. Remote CI is separate from these local results.
-See [verification evidence](docs/testing.md) and the [release guide](docs/release-guide.md).
-
-## Start locally
-
-Use Python 3.14 for the closest match to the verified development environment.
-The project declares Python 3.12+, but that full version/platform range has not
-been qualified. SQLite needs FTS5 support. Use one application worker.
-
-From a clone or downloaded copy of this repository:
-
-~~~sh
-uv venv --python python3
-uv pip install --python .venv/bin/python -r requirements.lock -e .
-~~~
-
-If `.env` does not already exist, copy `.env.example` to `.env`. For fixture mode,
-leave `NEBIUS_API_KEY` blank. Generate a private session secret:
-
-~~~sh
-.venv/bin/python -c "import secrets; print(secrets.token_urlsafe(48))"
-~~~
-
-Set `MATTERGATE_SESSION_SECRET` to that generated value in `.env`, then start:
-
-~~~sh
+```sh
+git clone https://github.com/NaveenGali11/MatterGate.git
+cd MatterGate
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.lock -e .
+cp .env.example .env
 .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
-~~~
+```
 
-Open [http://127.0.0.1:8000](http://127.0.0.1:8000). The app creates its local database
-and seeds demo records automatically. You can also run `.venv/bin/python -m app.seed`.
-Keep the server terminal open; stop with Ctrl+C.
+Open [http://127.0.0.1:8000](http://127.0.0.1:8000). Startup seeds the local database.
+Use one worker and keep the server terminal open. Preserve any existing `.env`
+instead of overwriting it. The commands above use macOS/Linux venv paths.
 
-Full instructions, a standard-venv alternative and configuration bounds:
-[docs/setup.md](docs/setup.md).
+1. Open **New research** as **Jordan**. Keep the prefilled EU Vendor X question,
+   matter and purpose unchanged, and select **Fixture**.
+2. Choose **Check scope and research**. Open the brief and select a numbered
+   reference to inspect its authorized excerpt.
+3. Open **Human review**, choose **Continue as Alex**, and record a decision after
+   inspecting the assessment.
+4. Open **Run receipt** to inspect the decision, audit and downloadable JSON.
+5. Return to Overview and choose **See the blocked request**. Permission denial
+   should stop the new run before retrieval or provider invocation.
 
-## Enable live Nebius inference
+Fixture mode uses a saved, hash-checked response for the exact seeded question.
+It makes no Nebius call. Arbitrary questions require live mode and remain subject
+to the application policy. Full configuration, stable private session secrets and
+an alternative uv installation are in [setup](docs/setup.md).
 
-Create a key in [Nebius Token Factory](https://tokenfactory.nebius.com) and configure
-these server-side values in `.env`:
+The [5-10 minute visual guide](docs/team-testing-guide.md) includes screenshots,
+expected outcomes, negative cases and a bug-report template.
 
-~~~dotenv
+## What happens inside
+
+| Responsibility | Owner | Result |
+|---|---|---|
+| Research permission | Application policy | An expiring scope limits eligible evidence |
+| Research draft | NVIDIA Nemotron via Nebius, or explicit fixture | Summary, conditions, caveats and evidence references |
+| Structural validation | Application code | Ten checks must pass before human review |
+| Draft disposition | Human reviewer | Approve, reject or request revision, with an audit record |
+
+Approving a draft accepts the **research assessment**. It does not authorize the
+underlying data sharing. An approved assessment may recommend **do not proceed**.
+Request revision records feedback; it does not automatically regenerate a draft.
+
+```mermaid
+flowchart LR
+    Q[Research request] --> P{Permission}
+    P -->|Deny| D[Safe denial]
+    P -->|Allow| E[Scoped evidence]
+    E --> M[NVIDIA Nemotron via Nebius]
+    M --> C{Structural controls}
+    C -->|Fail| B[Withhold draft]
+    C -->|Pass| H[Human review]
+    H --> R[Decision and receipt]
+    D --> A[(Audit ledger)]
+    B --> A
+    R --> A
+```
+
+The stack is **FastAPI, Pydantic, Jinja, minimal JavaScript, HTTPX and SQLite/FTS5**.
+Retrieval selects at most five authorized chunks and 8,000 context characters.
+The model has no tools to expand scope or approve its own output.
+
+## See the product
+
+![Live research brief with authorized evidence beside its claims](docs/images/devpost/01-live-evidence-review.jpg)
+
+*Actual live run with synthetic/public evidence. The thumbnail is AI-generated
+promotional artwork; the gallery contains real product captures.*
+
+![Live Nebius receipt with provider diagnostics, checks and human review](docs/images/devpost/02-nebius-live-receipt.jpg)
+
+The [gallery](docs/images/devpost/README.md) also shows human review, Overview and
+an older denied request. Screenshot metadata describes those recorded runs;
+new run IDs, answers, token counts and latency can differ.
+
+## Enable live NVIDIA inference
+
+Set these server-side values in your private `.env`, then restart:
+
+```dotenv
 NEBIUS_API_KEY=your_private_key
 NEBIUS_BASE_URL=https://api.tokenfactory.nebius.com/v1
 NEBIUS_MODEL=nvidia/Nemotron-3_5-Lightning
-~~~
+```
 
-Never commit `.env` or place credentials in client-side code. Restart after changing
-configuration. A configured key enables live attempts; only a completed provider
-call establishes that inference worked.
+Keep credentials out of Git and browser code. A configured badge enables live
+attempts; inspect a completed run to verify actual inference.
 
-The independently implemented HTTPX adapter calls `/chat/completions` with normal
-TLS verification, a restricted HTTPS host allowlist, no redirects or environment
-proxies, at most 900 output tokens and one total 45-second deadline. For the
-supported Lightning/Super identifiers, it requests thinking off. At most one
-regeneration attempt is made for malformed output within that same deadline.
+The adapter uses a restricted HTTPS host allowlist, normal TLS verification, no
+redirects or environment proxies, a total deadline of 45 seconds and a maximum
+900-token output budget. It requests thinking off for recognized model identifiers.
+At most one regeneration attempt is allowed for malformed output within that
+same deadline. Failed live runs stay failed; a fixture demo is a separate run.
 
-The live model uses a **cited-statement wire schema**: each summary, condition
-and caveat owns its claim text and chunk IDs. The app projects those unchanged
-statements into the displayed brief and citation list. It does not invent links
-or use fuzzy text matching to force an evaluation pass.
+Statements own their evidence IDs in the response contract. The app displays the
+same statement text and verifies exact references; it does not invent citations
+or use fuzzy matching to force a pass. See [API](docs/api.md) and
+[operations](docs/operations.md) for contracts and failure codes.
 
-Model and endpoint references:
-[Nebius's Nemotron notebook](https://github.com/nebius/token-factory-cookbook/blob/main/models/nemotron/run_nemotron.ipynb),
-[Nebius API documentation](https://docs.tokenfactory.nebius.com/api-reference/introduction),
-[NVIDIA's thinking-mode documentation](https://github.com/NVIDIA/TensorRT-LLM/blob/main/docs/source/deployment-guide/deployment-guide-for-nemotron-3-on-trtllm.md).
+The web server runs locally; live inference runs on Nebius. No hosted application
+URL or Nebius compute deployment is supplied by this repository.
 
-The web server runs locally; inference runs on Nebius. No Nebius AI Cloud compute,
-Serverless Jobs, DevPods, dedicated endpoint deployment or Tavily integration is
-implemented or claimed.
+## Verification
 
-## Try the two main scenarios
+- **101 automated tests** passed again on October 28 during public-source cleanup.
+  Packaging, local documentation links, attribution hashes and archive integrity
+  also passed; see [testing](docs/testing.md).
+- Isolated browser QA completed the fixture, evidence, review, receipt and denial
+  flow, plus 32 route/viewport checks.
+- The operator confirmed live run `08126a78` with 10/10 structural checks, human
+  approval, one provider attempt, 302 output tokens and 1,515 ms provider latency.
+  This is one observed run, not a benchmark.
+- [GitHub Actions passed for `552a5fa`](https://github.com/NaveenGali11/MatterGate/actions/runs/40139797857).
+  Check the workflow for any later commit separately.
 
-### Allowed research, followed by human review
+Run fixture/mock tests without paid inference:
 
-1. Choose **Run allowed assessment**. Scenario cards use live mode when configured;
-   otherwise, the supported fixture is selected.
-2. Inspect the granted scope, selected evidence, brief and deterministic checks.
-3. Open **Human review**, explicitly switch to Alex, and record a decision.
-4. Inspect **REVIEW SUBMITTED** in the audit trail.
+```sh
+.venv/bin/python -m pytest
+.venv/bin/python scripts/check_release.py
+```
 
-Approval accepts the research draft. It does not authorize the underlying data
-sharing. The recommendation inside a draft can be **DO NOT PROCEED** while the
-reviewer approves that assessment.
-
-### Denied privileged request
-
-Choose **Scenario 02 — See the blocked request**. It uses Jordan, restricted M&A
-and transaction analysis. The result should be **Denied**, with no retrieval or
-model-call events and no restricted source content.
-
-**Start separate fixture demo** is offered only on a live provider failure. It
-creates a new allowed fixture run; it cannot bypass a denial or evaluation block.
-The existing run retains its original outcome.
-
-The supported fixture is the exact seeded EU Vendor X question. Arbitrary custom
-questions require live mode and may still be denied by the small policy matrix.
-
-## Architecture
-
-~~~mermaid
-flowchart LR
-    U[Research request] --> P{Permission}
-    P -->|Deny| X[Safe denial]
-    P -->|Allow + scope| R[Authorized FTS5 retrieval]
-    R --> M[NVIDIA Nemotron via Nebius]
-    M --> J[Strict parsing]
-    J --> C{Deterministic controls}
-    C -->|Fail| B[Blocked]
-    C -->|Pass| H[Human review]
-    H --> A[Approve / Reject / Request revision]
-    X --> L[(Audit ledger)]
-    B --> L
-    A --> L
-~~~
-
-| Layer | Technology / responsibility |
-|---|---|
-| Web | FastAPI, Jinja templates, CSS and minimal JavaScript |
-| Data | SQLite, FTS5, source/chunk versions and content hashes |
-| Permissions | Adapted PriviLAB evaluator plus MatterGate scope rules |
-| Drafting | Independent Nebius HTTPX adapter; separate hash-verified fixture |
-| Evaluation | Pure deterministic checks, including exact source/chunk resolution |
-| Review | Session identity, ready-state checks, rationale and conflict handling |
-| Audit | Transactional, append-only safe events with per-run SHA-256 chaining |
-
-The ten checks are `POLICY_ALLOW`, `EVIDENCE_NONEMPTY`, `OUTPUT_SCHEMA`,
-`CITATION_PRESENT`, `CITATION_IN_SCOPE`, `CLAIM_COVERAGE`, `DISCLAIMER_EXACT`,
-`NO_RESTRICTED_SOURCE`, `NO_UNTRUSTED_COMMAND_FOLLOWING` and `REVIEW_REQUIRED`.
-
-[Architecture and data flow](docs/architecture.md) · [API contract](docs/api.md)
-
-## Actual PriviLAB reuse
+## PriviLAB reuse and licenses
 
 MatterGate adapts selected source from
-[PriviLAB, commit 21baa4ccdc468bd6a30681344eb8ec3df752790a](https://github.com/DataStrategyLab/privilab/tree/21baa4ccdc468bd6a30681344eb8ec3df752790a):
+[DataStrategyLab/privilab at `21baa4c`](https://github.com/DataStrategyLab/privilab/tree/21baa4ccdc468bd6a30681344eb8ec3df752790a):
+permission parsing/evaluation, authorization-first retrieval, exact citation checks,
+and selected fixture, review and boundary-test logic.
 
-- Strict permission policy parsing, evaluation and effective-allow gating.
-- Authorization-first retrieval SQL and stable scoped ranking.
-- Exact authorized-source and source/chunk citation checks.
-- Selected fixture integrity and review eligibility/conflict logic.
-- Boundary test cases.
+These are executed local adaptations, not a PriviLAB API connection or full
+upstream installation. Credit **Data Strategy Lab LLC** and upstream Creator &
+Lead Architect **Andrew Tsintsiruk**. No affiliation or endorsement is implied.
 
-These are executed local controls, not a PriviLAB API connection. The full upstream
-app, live OpenAI adapter, bootstrap, Docker configuration, corpus and branding are
-not included or enabled.
+Original MatterGate source is [MIT licensed](LICENSE). Adapted PriviLAB portions
+retain their [Apache-2.0 license](third_party/privilab/LICENSE) and
+[notices](third_party/privilab/NOTICE). The [reuse assessment](docs/privilab-reuse.md)
+and [source/hash manifest](docs/upstream/privilab-manifest.json) document the changes.
 
-Credit: **Data Strategy Lab LLC**; upstream Creator & Lead Architect
-**Andrew Tsintsiruk**. No affiliation or endorsement is implied. See the
-[reuse assessment](docs/privilab-reuse.md),
-[source/hash manifest](docs/upstream/privilab-manifest.json) and
-[upstream notices](third_party/privilab/NOTICE).
+## Limits and further reading
 
-## Scope and limits
+Citation linkage does not prove factual or legal correctness. Known attack-string
+checks are not universal prompt-injection protection. The audit hash chain is
+local and unanchored; it is not administrator-proof. Runs use one-process
+background tasks rather than a durable queue. This demo has no uploads, arbitrary
+web ingestion, SSO or production policy administration.
 
-- Demo identities are freely selectable. Signed sessions and actor checks do not
-  constitute production authentication, SSO or enterprise access management.
-- All internal documents and the transaction/vendor scenario are synthetic.
-  The public legal reference is an attributed paraphrase; see [corpus notes](docs/corpus.md).
-- Citation linkage and known attack-string checks do not prove factual/legal
-  correctness or universal prompt-injection resistance.
-- Audit chains are local and unanchored. A privileged administrator could rewrite
-  the database and recompute them.
-- Runs use one-process background tasks, not a durable distributed queue.
-- Live answers can vary or fail. Fixture output is deterministic and labeled.
-- A hosted, judge-accessible demo/test-build link has not yet been provided.
-- There are no production readiness, privacy-retention, compliance or certification claims.
-
-[Threat model](docs/threat-model.md) · [Operations and troubleshooting](docs/operations.md)
-
-## Tests and contribution
-
-~~~sh
-.venv/bin/python -m pytest
-~~~
-
-The command runs local fixture and mock-transport tests, not paid inference calls.
-The CI workflow is configured, but its latest result must be checked after publication.
-
-[Testing and manual acceptance](docs/testing.md) · [Contributing](CONTRIBUTING.md) ·
-[Security](SECURITY.md) · [Changelog](CHANGELOG.md)
-
-## Publish and present
-
-- [GitHub publication steps](docs/github-publishing.md)
-- [Hackathon project overview](docs/hackathon-submission.md)
-- [Demo script under three minutes](docs/demo-script.md)
-- [Documentation index](docs/README.md)
-- [Current PRD](mattergate-prd.md) and [roadmap](BUILD_PLAN.md)
-
-Original MatterGate source is [MIT licensed](LICENSE). Adapted PriviLAB source
-retains its Apache-2.0 license and notices under [third_party/privilab](third_party/privilab/LICENSE).
-Other references and dependencies retain their own terms.
+[Documentation index](docs/README.md) · [Current PRD](mattergate-prd.md) ·
+[Roadmap](BUILD_PLAN.md) · [Threat model](docs/threat-model.md) ·
+[Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) ·
+[Changelog](CHANGELOG.md) · [Release guide](docs/release-guide.md) ·
+[Hackathon overview](docs/hackathon-submission.md)
