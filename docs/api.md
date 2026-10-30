@@ -126,6 +126,18 @@ secrets, raw environment settings or credentials in the endpoint.
 
 ## Provider wire format and public brief
 
+### Hosted mode
+
+The [public AWS demo](hosting.md) requires the same signed browser workspace for
+run creation, history, reads, reviews and receipt export. Switching demo roles
+does not grant access to other workspaces. Unauthorized workspace lookups return
+404. Public mode adds trusted-host validation, Secure cookies, client-IP limits,
+bounded active work and persistent daily/monthly provider-attempt quotas.
+`GET /healthz` returns `{"status":"ok"}` after a database check, without calling
+the model. `/api/status` reports `app_mode: "public_demo"` on the hosted service.
+
+### Draft contract
+
 Live inference is prompted for statement-owned citations:
 
 ~~~json

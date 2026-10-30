@@ -17,6 +17,9 @@ STATE_GUIDANCE = {
     "MODEL_UNAVAILABLE": ("Generation could not complete", "The provider did not return an acceptable complete draft. No research answer is available.", "View safe diagnostics", "audit"),
 }
 ERROR_GUIDANCE = {
+    "PUBLIC_LIVE_QUOTA_REACHED": "The public demo's live allowance has been reached. You can start a separate seeded fixture demo without an AI call.",
+    "PUBLIC_LIVE_DISABLED": "Live generation is temporarily paused. You can still use the seeded fixture demo.",
+    "PUBLIC_SERVER_BUSY": "The public demo is serving other live requests. Wait briefly, then start a new run, or choose fixture mode.",
     "PROVIDER_AUTH_ERROR": "Nebius rejected authentication. Check the server's API key and account access, then start a new run.",
     "PROVIDER_RATE_LIMITED": "Nebius rate-limited this request. Wait before explicitly starting a new run.",
     "PROVIDER_HTTP_ERROR": "Nebius returned an unsuccessful HTTP status. Check provider availability and account access.",

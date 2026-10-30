@@ -9,6 +9,7 @@ which evidence **before** retrieval or AI inference. NVIDIA Nemotron on **Nebius
 Token Factory** drafts a cited assessment; application code validates it, and a
 separate human reviewer records the decision.
 
+[Live demo](https://mattergate-34-225-81-63.sslip.io) ·
 [Try locally](#try-locally-no-api-key-needed) ·
 [Visual testing guide](docs/team-testing-guide.md) ·
 [Architecture](docs/architecture.md) · [Gallery](docs/images/devpost/README.md) ·
@@ -17,6 +18,11 @@ separate human reviewer records the decision.
 > Uses synthetic internal documents and an attributed public reference. Demo
 > identities are freely selectable. This is not legal advice, production
 > authentication or a compliance certification.
+
+The [hosted AWS demo](docs/hosting.md) gives each browser session its own workspace.
+Use the same browser for the request and review. Live generation uses a shared
+allowance; fixture mode is an explicit alternative. Hosting and public-mode
+controls were verified on October 30, 2026.
 
 ## Try locally - no API key needed
 

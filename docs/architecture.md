@@ -1,8 +1,11 @@
 # MatterGate implementation
 
-The app is a local FastAPI/Jinja modular monolith, backed by SQLite/FTS5. It uses
+The app is a FastAPI/Jinja modular monolith, backed by SQLite/FTS5. It uses
 one worker with threadpool background tasks, signed demo sessions and same-origin
-JSON APIs. No hosted service or distributed job runner is configured.
+JSON APIs. The [public AWS deployment](hosting.md) runs behind Caddy on one
+Lightsail server with persistent local storage; there is no distributed job runner.
+Public mode binds every run, history entry, read, review and export to the signed
+browser workspace. Demo identities remain role simulations within that workspace.
 
 | Module | Responsibility |
 |---|---|

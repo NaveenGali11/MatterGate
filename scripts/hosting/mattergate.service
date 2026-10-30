@@ -1,0 +1,24 @@
+[Unit]
+Description=MatterGate public synthetic research demo
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mattergate
+Group=mattergate
+WorkingDirectory=/opt/mattergate/current
+EnvironmentFile=/etc/mattergate/environment
+ExecStart=/opt/mattergate/current/.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 1 --proxy-headers --forwarded-allow-ips 127.0.0.1 --timeout-graceful-shutdown 60
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=90
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/mattergate
+
+[Install]
+WantedBy=multi-user.target

@@ -2,7 +2,7 @@
 
 **PRD revision:** 2.0, October 24, 2026
 **Application release:** 0.2.0 — Evidence & Review
-**Status:** Implemented local demonstration; automated and operator-guided acceptance recorded; publication/submission work remains.
+**Status:** Implemented local and public AWS demonstration; automated and operator-guided acceptance recorded. The October 30 [hosting update](docs/hosting.md) adds isolated visitor workspaces, HTTPS, bounded public inference and persistent storage/backups. Submission media and final form completion remain operator tasks.
 
 This PRD describes current requirements and implemented behavior. It supersedes the original build-ready proposal. [HANDOVER.md](HANDOVER.md) explains the product and the reasons behind the decisions.
 

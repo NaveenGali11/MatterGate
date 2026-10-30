@@ -21,6 +21,13 @@ CREATE TABLE IF NOT EXISTS run_evidence (
  run_id TEXT NOT NULL REFERENCES research_runs(run_id), chunk_id TEXT NOT NULL REFERENCES source_chunks(chunk_id),
  PRIMARY KEY (run_id, chunk_id)
 );
+CREATE TABLE IF NOT EXISTS run_workspaces (
+ run_id TEXT PRIMARY KEY REFERENCES research_runs(run_id), workspace_id TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS workspace_runs ON run_workspaces(workspace_id);
+CREATE TABLE IF NOT EXISTS public_usage (
+ period TEXT PRIMARY KEY, attempts INTEGER NOT NULL CHECK(attempts >= 0)
+);
 CREATE TABLE IF NOT EXISTS evaluation_results (
  run_id TEXT NOT NULL REFERENCES research_runs(run_id), check_id TEXT NOT NULL,
  passed INTEGER NOT NULL CHECK(passed IN (0,1)), reason TEXT NOT NULL,

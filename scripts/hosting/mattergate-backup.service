@@ -1,0 +1,9 @@
+[Unit]
+Description=Consistent daily MatterGate SQLite backup
+
+[Service]
+Type=oneshot
+User=mattergate
+Group=mattergate
+UMask=0077
+ExecStart=/usr/bin/python3 /opt/mattergate/current/scripts/hosting/backup.py

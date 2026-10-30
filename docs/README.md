@@ -15,6 +15,7 @@ For a quick hands-on walkthrough, use the [teammate visual testing guide](team-t
 | [Testing](testing.md) | Recorded evidence, automated coverage and manual acceptance |
 | [Release test guide](release-guide.md) | Current changes, test-together steps and source archive packaging |
 | [Operations](operations.md) | Failures, restarts, fixture behavior and debugging |
+| [AWS hosting](hosting.md) | Live URL, visitor isolation, inference limits, deployment and backup runbook |
 | [PriviLAB reuse](privilab-reuse.md) | Pinned components, modifications, attribution and differences |
 | [Source manifest](upstream/privilab-manifest.json) | Upstream revision, copied symbols and source/local hashes |
 | [Corpus](corpus.md) | Synthetic material, public reference and source hashes |

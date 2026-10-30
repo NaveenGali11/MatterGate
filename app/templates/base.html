@@ -11,7 +11,7 @@
   <a class="skip-link" href="#main-content">Skip to content</a>
   <aside class="sidebar">
     <a class="brand" href="/"><span class="brand-mark">m<span>g</span></span><span>MatterGate<small>Permissioned research</small></span></a>
-    <div class="workspace-label"><span class="tiny-dot"></span> Demo workspace <span class="demo-label">LOCAL</span></div>
+    <div class="workspace-label"><span class="tiny-dot"></span> Demo workspace <span class="demo-label">{{ 'PUBLIC DEMO' if system.app_mode == 'public_demo' else 'LOCAL' }}</span></div>
     <nav aria-label="Main navigation">
       <a class="nav-item {{ 'active' if page == 'home' }}" href="/"><span class="nav-symbol">◫</span> Overview</a>
       <a class="nav-item {{ 'active' if page == 'new' }}" href="/runs/new"><span class="nav-symbol">＋</span> New research <span class="nav-arrow">↗</span></a>

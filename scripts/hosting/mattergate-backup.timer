@@ -1,0 +1,9 @@
+[Unit]
+Description=Daily MatterGate backup before the host snapshot
+
+[Timer]
+OnCalendar=*-*-* 01:00:00 UTC
+Persistent=true
+
+[Install]
+WantedBy=timers.target

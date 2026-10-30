@@ -1,5 +1,17 @@
 # Verification and acceptance evidence
 
+## October 30 public hosting acceptance
+
+The [AWS hosting release](hosting.md) passed **108 tests** locally on Python 3.14
+and on the Ubuntu host with Python 3.12, with one existing test-client deprecation
+warning. Real HTTPS smoke tests covered separate visitor workspaces, CSRF, receipt
+export, review, zero-operation denial and a successful Nebius/NVIDIA response.
+A second live run completed the browser review flow. Saved records survived a
+service restart, and a consistent backup restored with valid audit chains.
+The evidence below records earlier milestones and retains their original counts.
+
+## Earlier verification
+
 Last updated October 28, 2026. Browser/operator results below were recorded on
 October 24 for application version 0.2.0. The October 28 public-source cleanup
 changes documentation, image selection, source packaging and CI checks; it does

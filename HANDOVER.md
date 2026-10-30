@@ -1,5 +1,11 @@
 # MatterGate — product and engineering handover
 
+**October 30 deployment update:** The [public AWS demo and operating runbook](docs/hosting.md)
+now cover HTTPS hosting, isolated browser workspaces, persistent provider-attempt
+quotas and daily backup support. Acceptance passed 108 tests locally and on Ubuntu,
+plus hosted live generation/review, visitor isolation, restart persistence and
+backup restoration. Earlier milestone evidence below retains its original dates.
+
 Updated October 24, 2026 · Application version 0.2.0 · PRD revision 2.0
 
 **Start here:** this document explains the product, the reasoning behind it, what works today, and what the next owner needs to do. The [PRD](mattergate-prd.md) defines current requirements; the [documentation index](docs/README.md) links the detailed technical guides.

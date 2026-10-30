@@ -1,6 +1,10 @@
 # MVP trust boundaries
 
-This is a local synthetic demo, not a production security assessment.
+This is a synthetic demo, not a production security assessment. The [public AWS
+deployment](hosting.md) adds per-browser workspace isolation, HTTPS-only cookies,
+host validation, bounded admission and persistent provider-attempt quotas.
+Freely selecting Alex only changes the simulated role inside that browser's
+workspace; it is not real authentication or access to other visitors' records.
 
 | Boundary | Implemented control | Limit |
 |---|---|---|

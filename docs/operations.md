@@ -1,6 +1,7 @@
 # Operations and troubleshooting
 
 Run on localhost with one worker. Configuration is loaded at process startup.
+For the deployed HTTPS service, see the [AWS hosting runbook](hosting.md).
 Restart after editing `.env` or Python/prompt files. CSS changes normally require
 only a browser refresh; Cmd+Shift+R forces a refresh on the demonstrated Mac setup.
 

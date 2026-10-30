@@ -1,6 +1,7 @@
 import json
 import hashlib
 import logging
+from threading import BoundedSemaphore
 from uuid import uuid4
 
 from app.domain import ResearchRequest, Status, ControlError, now, parse_draft
@@ -10,6 +11,7 @@ from app.providers.fixture import FixtureProvider
 from app.providers.nebius import NebiusProvider, PROMPT_HASH
 from app.services import policy, retrieval
 from app.services.evaluation import evaluate
+from app.services.admission import AdmissionError
 
 logger = logging.getLogger("mattergate")
 
@@ -18,12 +20,23 @@ class RunService:
     def __init__(self, db, settings, live_provider=None, fixture_provider=None):
         self.db, self.settings = db, settings
         self.providers = {"fixture":fixture_provider or FixtureProvider(), "live":live_provider or NebiusProvider(settings)}
+        self.live_slots = BoundedSemaphore(2)
 
-    def create(self, request):
+    def create(self, request, workspace_id=None):
         run_id = str(uuid4())
         with self.db.transaction() as cx:
+            if self.settings.public_demo:
+                if not workspace_id:
+                    raise AdmissionError("WORKSPACE_REQUIRED")
+                if cx.execute("SELECT count(*) FROM research_runs").fetchone()[0] >= 2000:
+                    raise AdmissionError("DEMO_STORAGE_LIMIT_REACHED")
+                active = cx.execute("SELECT count(*) FROM research_runs WHERE status IN ('RECEIVED','POLICY_EVALUATING','SCOPE_GRANTED','RETRIEVING','DRAFTING','EVALUATING')").fetchone()[0]
+                if active >= 4:
+                    raise AdmissionError("SERVER_BUSY")
             cx.execute("INSERT INTO research_runs(run_id,actor_id,matter_id,purpose,jurisdiction,mode,question,status,created_at) VALUES (?,?,?,?,?,?,?,?,?)",
                 (run_id,request.actor_id,request.matter_id,request.purpose,request.jurisdiction,request.mode,request.question,Status.RECEIVED,now()))
+            if workspace_id:
+                cx.execute("INSERT INTO run_workspaces VALUES (?,?)", (run_id, workspace_id))
             observed = request.mode == "fixture" or isinstance(self.providers[request.mode], NebiusProvider)
             self.db.append_event(cx,run_id,"RUN_CREATED",{"status":"RECEIVED","mode":request.mode,
                 "instrumentation_version":1,"transport_observed":observed},request.actor_id)
@@ -65,9 +78,28 @@ class RunService:
             if isinstance(adapter, NebiusProvider):
                 def observe_attempt(attempt):
                     with self.db.transaction() as cx:
+                        if self.settings.public_demo:
+                            if not self.settings.live_enabled:
+                                raise ModelUnavailable("PUBLIC_LIVE_DISABLED")
+                            stamp = now()
+                            periods = (("day:"+stamp[:10], self.settings.live_daily_limit),
+                                       ("month:"+stamp[:7], self.settings.live_monthly_limit))
+                            for period, limit in periods:
+                                used = cx.execute("SELECT attempts FROM public_usage WHERE period=?", (period,)).fetchone()
+                                if (used[0] if used else 0) >= limit:
+                                    raise ModelUnavailable("PUBLIC_LIVE_QUOTA_REACHED")
+                            for period, _ in periods:
+                                cx.execute("INSERT INTO public_usage VALUES (?,1) ON CONFLICT(period) DO UPDATE SET attempts=attempts+1", (period,))
                         self.db.append_event(cx,run_id,"TRANSPORT_ATTEMPTED",{"attempt":attempt,"provider":"nebius"})
                 arguments["on_attempt"] = observe_attempt
-            result = adapter.generate_draft(**arguments)
+            limited = self.settings.public_demo and request.mode == "live"
+            if limited and not self.live_slots.acquire(blocking=False):
+                raise ModelUnavailable("PUBLIC_SERVER_BUSY")
+            try:
+                result = adapter.generate_draft(**arguments)
+            finally:
+                if limited:
+                    self.live_slots.release()
             provider = {**result.metadata,"provider":result.provider,"model_id":result.model_id,
                 "request_id":result.request_id,"latency_ms":result.latency_ms,"mode":request.mode,"outcome":"completed"}
             self.db.transition(run_id,Status.EVALUATING,"MODEL_COMPLETED" if request.mode == "live" else "FIXTURE_COMPLETED",provider,provider_json=canonical(provider))

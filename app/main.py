@@ -1,7 +1,5 @@
 import json
 import secrets
-import time
-from collections import defaultdict, deque
 from contextlib import asynccontextmanager
 from typing import Literal
 
@@ -11,6 +9,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, ConfigDict, Field
 from starlette.middleware.sessions import SessionMiddleware
+from starlette.middleware.trustedhost import TrustedHostMiddleware
+from urllib.parse import urlsplit
 
 from app.config import ROOT, Settings
 from app.domain import DISCLOSURE, QUESTION, ResearchRequest, ControlError
@@ -19,6 +19,7 @@ from app.seed import USERS, seed
 from app.services.runs import RunService
 from app.services.review import decide, ReviewConflict
 from app.services.presentation import guidance, evidence_view, receipt
+from app.services.admission import AdmissionError, RequestLimits
 
 
 def create_app(settings=None, *, database=None, live_provider=None, fixture_provider=None):
@@ -36,10 +37,12 @@ def create_app(settings=None, *, database=None, live_provider=None, fixture_prov
 
     app = FastAPI(title="MatterGate",lifespan=lifespan,docs_url=None,redoc_url=None)
     app.state.db, app.state.service, app.state.settings = db, service, settings
-    app.add_middleware(SessionMiddleware,secret_key=settings.session_secret,same_site="strict",max_age=28800)
+    app.add_middleware(SessionMiddleware,secret_key=settings.session_secret,same_site="strict",max_age=28800,https_only=settings.public_demo)
+    if settings.public_demo:
+        app.add_middleware(TrustedHostMiddleware,allowed_hosts=[urlsplit(settings.public_origin).hostname])
     app.mount("/static",StaticFiles(directory=ROOT / "static"),name="static")
     templates = Jinja2Templates(directory=ROOT / "templates")
-    limits = defaultdict(deque)
+    limits = RequestLimits()
 
     def session(request):
         if "actor" not in request.session:
@@ -50,12 +53,17 @@ def create_app(settings=None, *, database=None, live_provider=None, fixture_prov
         state = session(request)
         token = request.headers.get("x-csrf-token", "")
         origin = request.headers.get("origin")
-        if not secrets.compare_digest(token,state["csrf"]) or (origin and origin.rstrip("/") != str(request.base_url).rstrip("/")):
+        expected_origin = settings.public_origin if settings.public_demo else str(request.base_url).rstrip("/")
+        if not secrets.compare_digest(token,state["csrf"]) or (origin and origin.rstrip("/") != expected_origin):
             raise HTTPException(403,"CSRF_CHECK_FAILED")
         return state["actor"]
 
     def view(request,run_id):
         try:
+            if settings.public_demo:
+                owner = db.one("SELECT workspace_id FROM run_workspaces WHERE run_id=?", (run_id,))
+                if not owner or owner["workspace_id"] != session(request)["sid"]:
+                    raise LookupError("RUN_NOT_FOUND")
             return service.get(run_id,session(request)["actor"])
         except LookupError:
             raise HTTPException(404,"RUN_NOT_FOUND") from None
@@ -65,7 +73,7 @@ def create_app(settings=None, *, database=None, live_provider=None, fixture_prov
             raise HTTPException(503,"CONTROL_INTEGRITY_FAILED") from None
 
     def status():
-        return {"app_mode":"demo","provider_mode":"live" if settings.live_ready else "fixture",
+        return {"app_mode":"public_demo" if settings.public_demo else "demo","provider_mode":"live" if settings.live_ready else "fixture",
             "provider":"nebius" if settings.live_ready else "fixture","model_id":settings.model,
             "database_ready":db.one("SELECT count(*) AS n FROM sources")["n"] >= 6,
             "seed_data_version":"1.0","live_configured":settings.live_ready,
@@ -74,7 +82,16 @@ def create_app(settings=None, *, database=None, live_provider=None, fixture_prov
 
     def render(request,name,**context):
         actor = session(request)["actor"]
-        runs = db.rows("SELECT run_id,actor_id,matter_id,status,mode,created_at FROM research_runs "+("" if actor == "alex_reviewer" else "WHERE actor_id=? ")+"ORDER BY created_at DESC,run_id DESC",() if actor == "alex_reviewer" else (actor,))
+        clauses, values = [], []
+        if settings.public_demo:
+            clauses.append("run_id IN (SELECT run_id FROM run_workspaces WHERE workspace_id=?)")
+            values.append(request.session["sid"])
+        if actor != "alex_reviewer":
+            clauses.append("actor_id=?")
+            values.append(actor)
+        runs = db.rows("SELECT run_id,actor_id,matter_id,status,mode,created_at FROM research_runs "
+            + ("WHERE " + " AND ".join(clauses) + " " if clauses else "")
+            + "ORDER BY created_at DESC,run_id DESC", values)
         history_filter = request.query_params.get("filter","all")
         groups = {"all":None,"review":{"READY_FOR_REVIEW"},"completed":{"APPROVED","REJECTED","REVISION_REQUESTED"},"failed":{"DENIED","BLOCKED","MODEL_UNAVAILABLE"}}
         if history_filter not in groups:
@@ -112,16 +129,16 @@ def create_app(settings=None, *, database=None, live_provider=None, fixture_prov
         actor = mutation(request)
         if actor != body.actor_id:
             raise HTTPException(403,"REQUESTER_SESSION_MISMATCH")
-        queue = limits[request.session["sid"]]
-        while queue and time.monotonic()-queue[0] > 60:
-            queue.popleft()
-        if len(queue) >= 6:
-            raise HTTPException(429,"RUN_LIMIT_REACHED")
+        try:
+            limits.check(request.session["sid"], request.client.host if settings.public_demo and request.client else None)
+        except AdmissionError as error:
+            raise HTTPException(429,str(error),headers={"Retry-After":"60"}) from None
         if body.mode == "live" and not settings.live_ready:
             raise HTTPException(422,"LIVE_PROVIDER_NOT_CONFIGURED")
-        queue.append(time.monotonic())
         try:
-            run_id = service.create(body)
+            run_id = service.create(body,workspace_id=request.session["sid"] if settings.public_demo else None)
+        except AdmissionError as error:
+            raise HTTPException(429,str(error),headers={"Retry-After":"60"}) from None
         except Exception:
             raise HTTPException(503,"RUN_PERSISTENCE_FAILED") from None
         background.add_task(service.execute,run_id)
@@ -150,6 +167,8 @@ def create_app(settings=None, *, database=None, live_provider=None, fixture_prov
         actor = mutation(request)
         if actor != body.actor_id:
             raise HTTPException(403,"REVIEWER_SESSION_MISMATCH")
+        if settings.public_demo:
+            view(request,run_id)
         try:
             result = decide(db,run_id,actor,body.decision,body.rationale)
             return {"run_id":run_id,"status":result}
@@ -169,6 +188,11 @@ def create_app(settings=None, *, database=None, live_provider=None, fixture_prov
     @app.get("/api/status")
     def api_status():
         return status()
+
+    @app.get("/healthz")
+    def health():
+        db.one("SELECT 1")
+        return {"status":"ok"}
 
     @app.get("/",response_class=HTMLResponse)
     def home(request: Request):

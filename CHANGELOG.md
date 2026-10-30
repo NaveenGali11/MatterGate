@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- October 30 public AWS demo with isolated browser workspaces, persistent provider
+  attempt quotas, bounded admission, HTTPS settings and daily SQLite backup support.
+- 108 tests pass on local Python 3.14 and hosted Ubuntu Python 3.12; hosted live
+  generation, review, zero-operation denial, receipt export, restart persistence
+  and backup restoration verified. See `docs/hosting.md`.
+
 - Fixture-first README walkthrough and the illustrated teammate testing guide.
 - Removed six redundant screenshots from the current source tree; retained the current gallery.
 - Expanded private/local packaging exclusions and added repeatable release validation to CI.
